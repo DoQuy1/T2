@@ -1,0 +1,9 @@
+#myuploaderButton {
+    width: 40% !important;
+    margin-right: 10px !important;;
+    padding: 6px !important;;
+}
+table.uploadergrid{
+    width: 60% !important;
+    margin: 0px;
+}
