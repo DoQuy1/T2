@@ -9,7 +9,7 @@
         end if
     end function
 
-    function checkPage(cond, ret) 
+    function check(cond, ret) 
         if cond=true then
             Response.write ret
         else
@@ -102,7 +102,7 @@
                 <div class="card-body" style="padding-bottom: 0px">
                     <div class="row">
                         <div class="col-sm-5 pb-2">
-                            <a href="addeditProduct.asp" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add Products</a>
+                            <a href="signup.asp" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add User</a>
                         </div>
                     </div>
                     <div class="row">
@@ -122,12 +122,12 @@
                                 <input value="<%=inputsearch%>" class="form-control mr-sm-2" name="input-search"type="search" placeholder="Search" aria-label="Search" style="min-width: 260px;">
                                 <select class="form-select form-control mr-sm-2" name="option-search" aria-label="Default select example">
                                     
-                                    <option value="0" <%=checkPage(Clng(optionsearch)=0,"selected")%>>--Type--</option>
-                                    <option value="1" <%=checkPage(Clng(optionsearch)=1,"selected")%>>Name</option>
-                                    <option value="2" <%=checkPage(Clng(optionsearch)=2,"selected")%>>Address</option>
-                                    <option value="3" <%=checkPage(Clng(optionsearch)=3,"selected")%>>Phone</option>
-                                    <option value="4" <%=checkPage(Clng(optionsearch)=4,"selected")%>>Email</option>
-                                    <option value="5" <%=checkPage(Clng(optionsearch)=5,"selected")%>>Username</option>
+                                    <option value="0" <%=check(Clng(optionsearch)=0,"selected")%>>--Type--</option>
+                                    <option value="1" <%=check(Clng(optionsearch)=1,"selected")%>>Name</option>
+                                    <option value="2" <%=check(Clng(optionsearch)=2,"selected")%>>Address</option>
+                                    <option value="3" <%=check(Clng(optionsearch)=3,"selected")%>>Phone</option>
+                                    <option value="4" <%=check(Clng(optionsearch)=4,"selected")%>>Email</option>
+                                    <option value="5" <%=check(Clng(optionsearch)=5,"selected")%>>Username</option>
                                 </select>
                                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                                 </form>

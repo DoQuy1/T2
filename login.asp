@@ -22,7 +22,17 @@
             If not result.EOF Then
                 Session("CustomerID") = result("CustomerID")
                 Session("Success")="Login Successfully"
-                Response.redirect("index.asp")
+                Dim referer
+                referer = Request.ServerVariables("HTTP_REFERER")
+
+                ' Kiểm tra xem có giá trị đường dẫn trước đó hay không
+                If Len(referer) > 0 Then
+                    ' Redirect về trang trước đó
+                    Response.Redirect referer
+                Else
+                    ' Nếu không có đường dẫn trước đó, redirect về trang mặc định
+                    Response.redirect("index.asp")
+                End If
             Else
             ' dang nhap ko thanh cong
             Session("Error") = "Wrong email or password"
@@ -45,9 +55,9 @@
             result.Close()
             connDB.Close()
         End If
-    ' Else
-    '     ' false
-    '     Session("Error")="Please input email or username and password."
+    Else
+        ' false
+        Session("Error")="Please input email or username and password."
     End if
 
 %>
