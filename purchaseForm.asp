@@ -1,18 +1,24 @@
 
 <!-- #include file="connect.asp" -->
-
+<%
+      If (isnull(Session("CustomerID")) OR TRIM(Session("CustomerID")) = "") Then
+        Response.redirect("login.asp")
+      End If
+      Dim customerID
+      customerID=Session("CustomerID")
+%>
 <!-- #include file="./layout/header.asp" -->
 <div class="mt-4">
     <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Order Management</h1>
+                        <h1>Purchase</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="index.asp">Home</a></li>
-                            <li class="breadcrumb-item active">Order Management</li>
+                            <li class="breadcrumb-item active">Purchase</li>
                         </ol>
                     </div>
                 </div>
@@ -27,7 +33,7 @@
                     <div class="col-sm-6">
                         <form method="post" id="form-pageSize" action="" name="form-pageSize">
                            <div class="row mb-3">
-                                <label for="pageSize" class="p-2">Number of invoices displayed:</label>
+                                <label for="pageSize" class="p-2">Number of purchase displayed:</label>
                                 <input type="number" style="width:70px;height:38px" class="form-control " id="pageSize" name="pageSize" value="<%=pageSize%>" min="1">
                             </div>
                         </form>
@@ -69,32 +75,71 @@
             </div>
         </div>
     </form>
-            <%
-                Set cmdOrderUserID = Server.CreateObject("ADODB.Command")
-                connDB.open()
-                cmdOrderUserID.ActiveConnection = connDB
-                cmdOrderUserID.CommandType = 1
-                cmdOrderUserID.Prepared = True
-                cmdOrderUserID.CommandText = "Select * from Customers where CustomerID = ?"
-                cmdOrderUserID.parameters.Append cmdOrderUserID.createParameter("OrderCurrUserID",3,1, ,OrderCurrUserID)
-                set UserCurr = cmdOrderUserID.execute
-            %>
+           <%
+            
+            
+            Set cmdPrep = Server.CreateObject("ADODB.Command")
+            connDB.Open()
+            cmdPrep.ActiveConnection = connDB
+            cmdPrep.CommandType = 1
+            cmdPrep.Prepared = True
+            cmdPrep.CommandText="Select * from Orders where CustomerID=? ORDER BY OrderDate DESC"
+            cmdPrep.parameters.Append cmdPrep.createParameter("customerID",3,1, ,customerID)
+            Set Result = cmdPrep.execute
+            do while not Result.EOF
+
+           %>
         <div class="col-lg-12">
           <!-- Details -->
           <div class="card mb-4">
             <div class="card-body">
               <div class="mb-3 d-flex justify-content-between mr-5 ">
                 <div>
-                  <span class="me-3">22-11-2021</span>
-                  <span class="me-3">#16123222</span>
-                  <span class="me-3">Visa -1234</span>
-                  <span class="badge rounded-pill bg-info">SHIPPING</span>
+                  <%
+                  paymentId=Result("PaymentMethodID")
+                  Set cmdPrepPay = Server.CreateObject("ADODB.Command")
+                  
+                  cmdPrepPay.ActiveConnection = connDB
+                  cmdPrepPay.CommandType = 1
+                  cmdPrepPay.Prepared = True
+                  cmdPrepPay.CommandText="Select * from PaymentMethods where PaymentMethodID =?"
+                  cmdPrepPay.parameters.Append cmdPrepPay.createParameter("paymentId",3,1, ,paymentId)
+                  Set ResultPay = cmdPrepPay.execute
+                  %>
+                  <span class="me-3"><%=Result("OrderDate")%></span>
+                  <span class="me-3">#<%=Result("OrderID")%></span>
+                  <span class="me-3"><%=ResultPay("PaymentMethodName")%></span>
+                  <span class="badge rounded-pill bg-info"><%=Result("Status")%></span>
                 </div>
-                <div class="d-flex mr-5">
+                <div class="d-flex ">
                   <button class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text"><i class="bi bi-download"></i> <span class="text">Invoice</span></button>
                 </div>
               </div>
               <table class="table table-borderless">
+                <%
+                        orderID= Result("OrderID")
+                        ' Response.write(orderID)
+                        Set cmdPrepOrderDetails = Server.CreateObject("ADODB.Command")
+                        cmdPrepOrderDetails.ActiveConnection = connDB
+                        cmdPrepOrderDetails.CommandType = 1
+                        cmdPrepOrderDetails.Prepared = True
+                        cmdPrepOrderDetails.CommandText="Select * from OrderDetail where OrderID=? "
+                        cmdPrepOrderDetails.parameters.Append cmdPrepOrderDetails.createParameter("orderID",3,1, ,orderID)
+                        Set ResultOrderDetails = cmdPrepOrderDetails.execute
+
+                        do while not ResultOrderDetails.EOF
+                          
+                          productID=ResultOrderDetails("ProductID")
+                          if (not isnull(productID)) then
+                          ' Response.write(productID)
+                          Set cmdProduct = Server.CreateObject("ADODB.Command")
+                          cmdProduct.ActiveConnection = connDB
+                          cmdProduct.CommandType = 1
+                          cmdProduct.Prepared = True
+                          cmdProduct.CommandText="Select * from Products where ProductID=?"
+                          cmdProduct.parameters.Append cmdProduct.createParameter("ProductID",3,1, ,productID)
+                          Set ResultProduct = cmdProduct.execute
+                  %>
                 <tbody>
                   <tr>
                     <td>
@@ -103,25 +148,37 @@
                           <img src="https://www.bootdey.com/image/280x280/87CEFA/000000" alt="" width="35" class="img-fluid">
                         </div>
                         <div class="flex-lg-grow-1 ms-3 ml-3">
-                          <h6 class="small mb-0"><a href="#" class="text-reset">Wireless Headphones with Noise Cancellation Tru Bass Bluetooth HiFi</a></h6>
-                          <span class="small">Color: Black</span>
+                          <h6 class="small mb-0"><a href="orderDetail.asp?orderId=<%=Result("OrderID")%>" class="text-reset"><%=ResultProduct("ProductName")%></a></h6>
+                          <span class="small"><%=ResultProduct("Brand")%></span>
                         </div>
                       </div>
                     </td>
-                    <td>x1</td>
-                    <td class="text-end">$79.99</td>
+                    <td>x<%=ResultOrderDetails("Quantity")%></td>
+                    <td class="text-end">$<%=ResultProduct("Price")%></td>
                   </tr>
                 </tbody>
+                
+                <%
+                    Else
+                      Response.write("<h1>product has been deleted</h1>")
+                    End If
+                    ResultOrderDetails.MoveNext
+                  loop
+                %>
                 <tfoot>
                   <tr class="fw-bold">
                     <td colspan="2">TOTAL</td>
-                    <td class="text-end">$169,98</td>
+                    <td class="text-end">$<%=Result("TotalAmount")%></td>
                   </tr>
                 </tfoot>
               </table>
             </div>
           </div>
         </div>
+          <%
+              Result.MoveNext
+            loop
+            %>
         <div class="col-lg-12">
           <!-- Details -->
           <div class="card mb-4">

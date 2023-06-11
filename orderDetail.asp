@@ -10,6 +10,8 @@
    cmdOrder.parameters.Append cmdOrder.createParameter("orderId",3,1, ,orderId)
    set OrderCurr = cmdOrder.execute
 
+   set OrderCurrStatus=OrderCurr("Status")
+
    Set cmdOrderDetail = Server.CreateObject("ADODB.Command")
    cmdOrderDetail.ActiveConnection = connDB
    cmdOrderDetail.CommandType = 1
@@ -150,7 +152,7 @@
                   <span class="me-3"><%=OrderCurrOrderDate%></span>
                   <span class="me-3">#<%=OrderCurrID%></span>
                   <span class="me-3"><%=PaymentMethodName%></span>
-                  <span class="badge rounded-pill bg-info">SHIPPING</span>
+                  <span class="badge rounded-pill bg-info"><%=OrderCurrStatus%></span>
                 </div>
                 <div class="d-flex">
                   <button class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text"><i class="bi bi-download"></i> <span class="text">Invoice</span></button>
