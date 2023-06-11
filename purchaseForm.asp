@@ -1,11 +1,24 @@
 
 <!-- #include file="connect.asp" -->
 <%
+      function check(cond, ret) 
+        if cond=true then
+            Response.write ret
+        else
+            Response.write ""
+        end if
+    end function
+
       If (isnull(Session("CustomerID")) OR TRIM(Session("CustomerID")) = "") Then
         Response.redirect("login.asp")
       End If
       Dim customerID
       customerID=Session("CustomerID")
+
+      inputsearch=Request.QueryString("input-search")
+      optionsearch=Request.QueryString("option-search")
+      fromDate = Request.QueryString("from_date")
+      toDate = Request.QueryString("to_date")
 %>
 <!-- #include file="./layout/header.asp" -->
 <div class="mt-4">
@@ -31,6 +44,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-6">
+                    <!--
                         <form method="post" id="form-pageSize" action="" name="form-pageSize">
                            <div class="row mb-3">
                                 <label for="pageSize" class="p-2">Number of purchase displayed:</label>
@@ -38,13 +52,15 @@
                             </div>
                         </form>
                         <button class="btn btn-danger mb-2" id="deleteButton" style="display: none;"><a data-bs-toggle="modal" data-bs-target="#confirm-delete" title="Delete">Delete Selected Items</a></button>
+                    -->
                     </div>
                     <div class="col-sm-6 ">
                            <form class="form-inline mr-4" action="" style="justify-content: flex-end;">
-                                <input value="" class="form-control mr-sm-2 col-md-5" name="input-search"type="search" placeholder="Search" aria-label="Search" style="min-width: 260px;">
+                                <input value="<%=inputsearch%>" class="form-control mr-sm-2 col-md-5" name="input-search"type="search" placeholder="Search" aria-label="Search" style="min-width: 260px;">
                                 <select class="form-select form-control mr-sm-2 col-md-2" name="option-search" aria-label="Default select example">
-                                    
-                                    
+                                    <option value="0" <%=check(Clng(optionsearch)=0,"selected")%>>--Type--</option>
+                                    <option value="1" <%=check(Clng(optionsearch)=1,"selected")%>>Status</option>
+                                    <option value="2" <%=check(Clng(optionsearch)=2,"selected")%>>ProductName</option>
                                 </select>
                                 <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" type="submit">Search</button>
                             </form>
@@ -76,15 +92,29 @@
         </div>
     </form>
            <%
-            
-            
-            Set cmdPrep = Server.CreateObject("ADODB.Command")
-            connDB.Open()
-            cmdPrep.ActiveConnection = connDB
-            cmdPrep.CommandType = 1
-            cmdPrep.Prepared = True
-            cmdPrep.CommandText="Select * from Orders where CustomerID=? ORDER BY OrderDate DESC"
-            cmdPrep.parameters.Append cmdPrep.createParameter("customerID",3,1, ,customerID)
+              Set cmdPrep = Server.CreateObject("ADODB.Command")
+              connDB.Open()
+              cmdPrep.ActiveConnection = connDB
+              cmdPrep.CommandType = 1
+              cmdPrep.Prepared = True
+              if(trim(inputsearch) <> "") and (NOT IsEmpty(inputsearch)) and trim(optionsearch) <> "" and (NOT IsEmpty(optionsearch)) then
+              Select Case optionsearch
+                Case 0
+                cmdPrep.CommandText="Select * from Orders where CustomerID="&customerID&" ORDER BY OrderDate DESC"
+                Case 1 
+                cmdPrep.CommandText = "SELECT * FROM Orders Where Status Like '%"&inputsearch&"%'ORDER BY OrderDate DESC"
+                Case 2
+                cmdPrep.CommandText = "SELECT O.* FROM Orders O " & _
+         "INNER JOIN OrderDetail OD ON O.OrderID = OD.OrderID " & _
+         "INNER JOIN Products P ON OD.ProductID = P.ProductID " & _
+         "WHERE P.ProductName LIKE '%"&inputsearch&"%'ORDER BY OrderDate DESC"
+              End Select
+              Else
+                  cmdPrep.CommandText="Select * from Orders where CustomerID="&customerID&" ORDER BY OrderDate DESC"
+              end if
+              if(trim(fromDate) <> "") and (NOT IsEmpty(fromDate)) and trim(toDate) <> "" and (NOT IsEmpty(toDate)) then
+                  cmdPrep.CommandText = "SELECT * FROM Orders Where OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID "
+              end if
             Set Result = cmdPrep.execute
             do while not Result.EOF
 

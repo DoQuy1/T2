@@ -9,7 +9,7 @@
         end if
     end function
 
-    function checkPage(cond, ret) 
+    function check(cond, ret) 
         if cond=true then
             Response.write ret
         else
@@ -118,10 +118,10 @@
                                 <input value="<%=inputsearch%>" class="form-control mr-sm-2" name="input-search"type="search" placeholder="Search" aria-label="Search" style="min-width: 260px;">
                                 <select class="form-select form-control mr-sm-2" name="option-search" aria-label="Default select example">
                                     
-                                    <option value="0" <%=checkPage(Clng(optionsearch)=0,"selected")%>>--Type--</option>
-                                    <option value="1" <%=checkPage(Clng(optionsearch)=1,"selected")%>>Name</option>
-                                    <option value="2" <%=checkPage(Clng(optionsearch)=2,"selected")%>>Category</option>
-                                    <option value="3" <%=checkPage(Clng(optionsearch)=3,"selected")%>>Price</option>
+                                    <option value="0" <%=check(Clng(optionsearch)=0,"selected")%>>--Type--</option>
+                                    <option value="1" <%=check(Clng(optionsearch)=1,"selected")%>>Name</option>
+                                    <option value="2" <%=check(Clng(optionsearch)=2,"selected")%>>Category</option>
+                                    <option value="3" <%=check(Clng(optionsearch)=3,"selected")%>>Price</option>
                                 </select>
                                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                                 </form>
