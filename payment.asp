@@ -19,6 +19,7 @@
         Set sql =Nothing
         end if
     Else
+        Response.redirect("login.asp")
     End if
     
 %>

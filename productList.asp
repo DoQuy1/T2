@@ -10,7 +10,7 @@
         end if
     end function
 
-    function checkPage(cond, ret) 
+    function check(cond, ret) 
         if cond=true then
             Response.write ret
         else
@@ -26,11 +26,21 @@
         page=1
     end if
     if(trim(categoryid) = "") or (isnull(categoryid)) then
-    strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status='enable'"
-    currentUrl = "productList.asp?"
+        if(trim(inputsearch) = "") or (IsEmpty(inputsearch)) then
+        strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status='Enable'"
+        currentUrl = "productList.asp?"
+        else
+            strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status='Enable' and ProductName like '%"&inputsearch&"%'"
+            currentUrl = "productList.asp?input-search="&inputsearch&"&"
+        end if
     else
-    strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status='enable' and CategoryID="&categoryid&""
-    currentUrl = "productList.asp?categoryid="&categoryid&"&"
+        if(trim(inputsearch) = "") or (IsEmpty(inputsearch)) then
+            strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status='Enable' and CategoryID="&categoryid&""
+            currentUrl = "productList.asp?categoryid="&categoryid&"&"
+        else
+            strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status='Enable' and CategoryID="&categoryid&" and ProductName like '%"&inputsearch&"%'"
+            currentUrl = "productList.asp?categoryid="&categoryid&"&input-search="&inputsearch&"&"
+        end if
     end if
 
     connDB.Open()
@@ -43,7 +53,6 @@
     pages = Ceil(totalRows/limit)
 
     offset = (Clng(page) * Clng(limit)) - Clng(limit)
-    
     
 %>
 <!-- #include file="./layout/header.asp" -->
@@ -80,11 +89,14 @@
 
 <div class="container bootdey">
     <div class="col-md-3">
+        <form id="formsearch" action="">
         <section class="panel">
             <div class="panel-body">
-                <input type="text" placeholder="Keyword Search" class="form-control" />
+                <input type="text" value="<%=inputsearch%>"  name="input-search" id="input-search" placeholder="Keyword Search" class="form-control" />
+                <input type="submit" hidden>
             </div>
         </section>
+        </form>
         <section class="panel">
             <header class="panel-heading">
                 Category
@@ -96,7 +108,7 @@
                             <%
                                 for Each item in categories  
                             %>
-                            <li class=""><a href="productList.asp?categoryid=<%=categories(item).Id%>">- <%=categories(item).Name%></a></li>
+                            <li class="<%=check(Clng(categoryid)=categories(item).Id,"active")%>"><a href="productList.asp?categoryid=<%=categories(item).Id%>">- <%=categories(item).Name%></a></li>
                             <%       
                                 Next
                             %>
@@ -121,46 +133,6 @@
                 </ul>
             </div>
         </section>
-        <section class="panel">
-            <header class="panel-heading">
-                Filter
-            </header>
-            <div class="panel-body">
-                <form role="form product-form">
-                    <div class="form-group">
-                        <label>Brand</label>
-                        <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
-                            <option>Wallmart</option>
-                            <option>Catseye</option>
-                            <option>Moonsoon</option>
-                            <option>Textmart</option>
-                        </select>
-                        <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">Wallmart</span></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Color</label>
-                        <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
-                            <option>White</option>
-                            <option>Black</option>
-                            <option>Red</option>
-                            <option>Green</option>
-                        </select>
-                        <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">White</span></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Price</label>
-                        <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
-                            <option>Small</option>
-                            <option>Medium</option>
-                            <option>Large</option>
-                            <option>Extra Large</option>
-                        </select>
-                        <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">Small</span></span>
-                    </div>
-                    <button class="btn btn-primary" type="submit">Filter</button>
-                </form>
-            </div>
-        </section>
     </div>
     <div class="col-md-9">
         <section class="panel">
@@ -183,11 +155,18 @@
                 cmdPrep.CommandType = 1
                 cmdPrep.Prepared = True
                 if(trim(categoryid) = "") or (isnull(categoryid)) then
-                cmdPrep.CommandText = "SELECT * FROM Products where Status='Enable' ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                    if(trim(inputsearch) = "") or (IsEmpty(inputsearch)) then
+                    cmdPrep.CommandText = "SELECT * FROM Products where Status='Enable' ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                    else
+                        cmdPrep.CommandText = "SELECT * FROM Products where Status='Enable' and ProductName like '%"&inputsearch&"%' ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                    end if 
                 else
-                cmdPrep.CommandText = "SELECT * FROM Products where Status='Enable' and CategoryID="&categoryid&" ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                    if(trim(inputsearch) = "") or (IsEmpty(inputsearch)) then
+                    cmdPrep.CommandText = "SELECT * FROM Products where Status='Enable' and CategoryID="&categoryid&" ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                    else
+                    cmdPrep.CommandText = "SELECT * FROM Products where Status='Enable' and CategoryID="&categoryid&" and ProductName like '%"&inputsearch&"%' ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                    end if
                 end if
-                
                 cmdPrep.parameters.Append cmdPrep.createParameter("offset",3,1, ,offset)
                 cmdPrep.parameters.Append cmdPrep.createParameter("limit",3,1, , limit)
 
@@ -221,6 +200,12 @@
     </div>
 </div>
 <!-- #include file="./layout/footer.asp" -->
-
+<script>
+        $(document).ready(function() {
+            $('#input-search').change(function() {
+                $('#formsearch').submit();
+            });
+        });
+</script>
 </body>
 </html>

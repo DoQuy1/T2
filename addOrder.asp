@@ -127,7 +127,7 @@
             Session("Success") = "Order was added!"
             ' Hoàn thành giao dịch
             connDB.CommitTrans
-            Response.Redirect("orderDetail.asp")
+            Response.Redirect("purchaseForm.asp")
         Else
             connDB.RollbackTrans
             Response.Write("Error Save (" & Err.Description & ")")

@@ -48,7 +48,10 @@
             If not result.EOF Then
                 Session("CustomerID") = result("CustomerID")
                 Session("Success")="Login Successfully"
-                Response.redirect("index.asp")
+                
+                 Response.redirect("index.asp")
+                
+                
             Else
             Session("Error") = "Wrong username or password"
             End if
