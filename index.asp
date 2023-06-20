@@ -1,32 +1,14 @@
 <!-- #include file="connect.asp" -->
 <%
-' ham lam tron so nguyen
     function Ceil(Number)
         Ceil = Int(Number)
         if Ceil<>Number Then
             Ceil = Ceil + 1
         end if
     end function
-
-    function checkPage(cond, ret) 
-        if cond=true then
-            Response.write ret
-        else
-            Response.write ""
-        end if
-    end function
-' trang hien tai
-    page = Request.QueryString("page")
     limit = 3
-
-    if (trim(page) = "") or (isnull(page)) then
-        page = 1
-    end if
-
-    offset = (Clng(page) * Clng(limit)) - Clng(limit)
-
-    strSQL = "SELECT COUNT(ProductID) AS count FROM Products"
     connDB.Open()
+    strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable'"
     Set CountResult = connDB.execute(strSQL)
 
     totalRows = CLng(CountResult("count"))
@@ -193,23 +175,33 @@
       </div>
       <!-- banner bg main end -->
       <!-- Tai nghe section start -->
-      
-      <div class="fashion_section">
+      <%
+         Dim slide_start, i, SQL, Result,j
+      %>
+      <div class="product_section">
          <div id="main_slider" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                   <%
-                  Dim slide_start, i, SQL, Result
+                      strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable'"
+                     Set CountResult = connDB.execute(strSQL)
+
+                     totalRows = CLng(CountResult("count"))
+
+                     Set CountResult = Nothing
+                  ' lay ve tong so trang
+                     pages = Ceil(totalRows/limit)
+                     if pages<>0 then
                   slide_start = 1
-                  SQL ="Select * from Products"
+                  SQL ="Select * from Products where Status = 'Enable'"
                   Set Result = connDB.execute(SQL)
                   For i= 0 To pages - 1
                   %>
                      <div class="carousel-item <% If i=0 then Response.write("active")%>">
                         <div class="container">
                            <h1 class="fashion_taital">Tai nghe</h1>
-                           <div class="fashion_section_">
+                           <div class="product_section_">
                               <div class="row">
-                                    <% Dim j
+                                    <% 
                                     For j = slide_start To slide_start + limit - 1
                                        if j > totalRows then exit for
                                        %>
@@ -246,432 +238,206 @@
             <i class="fa fa-angle-right"></i>
             </a>
          </div>
+         <%
+         end if
+         set SQL=nothing 
+         set Result=nothing
+      %>
       </div>
       <!-- Tai nghe section end -->
       <!-- Tai nghe in ear section start -->
-      <div class="fashion_section">
-         <div id="electronic_main_slider" class="carousel slide" data-ride="carousel">
+      <div class="product_section">
+         <div id="inear_main_slider" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
-               <div class="carousel-item active">
+            <%
+                   strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable' and CategoryID=1"
+                  Set CountResult = connDB.execute(strSQL)
+
+                  totalRows = CLng(CountResult("count"))
+
+                  Set CountResult = Nothing
+               ' lay ve tong so trang
+                  pages = Ceil(totalRows/limit)
+                  if pages<>0 then
+               slide_start = 1
+               SQL ="Select * from Products where Status = 'Enable'and CategoryID=1"
+               Set Result = connDB.execute(SQL)
+               For i= 0 To pages - 1
+            %>
+               <div class="carousel-item <% If i=0 then Response.write("active")%>">
                   <div class="container">
                      <h1 class="fashion_taital">Tai Nghe In Ear</h1>
-                     <div class="fashion_section_2">
+                     <div class="product_section_2">
                         <div class="row">
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Laptop</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/laptop-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
+                           <% 
+                              For j = slide_start To slide_start + limit - 1
+                                 if j > totalRows then exit for
+                                 %>
+                                 <div class="col-lg-4 col-sm-4">
+                                    <div class="box_main">
+                                       <h4 class="shirt_text"><%=Result("ProductName")%></h4>
+                                       <p class="price_text">Price  <span style="color: #262626;"><%=Result("Price")%></span></p>
+                                       <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
+                                       <div class="tshirt_img"><img src="images/tshirt-img.png"></div>
+                                       <div class="btn_main">
+                                          <div class="buy_bt"><a href="payment.asp">Buy Now</a></div>
+                                          <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
+                                          <div class="seemore_bt"><a href="productDetail.asp?id=<%=Result("ProductID")%>">See More</a></div>
+                                       </div>
+                                    </div>
                                  </div>
-                              </div>
+                                 <%
+                                 Result.MoveNext
+                              Next
+                              slide_start = slide_start + limit
+                              %>
                            </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Mobile</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/mobile-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Computers</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/computer-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
                            </div>
                         </div>
                      </div>
-                  </div>
-               </div>
-               <div class="carousel-item">
-                  <div class="container">
-                     <h1 class="fashion_taital">Tai nghe In Ear</h1>
-                     <div class="fashion_section_2">
-                        <div class="row">
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Laptop</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/laptop-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Mobile</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/mobile-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Computers</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/computer-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="carousel-item">
-                  <div class="container">
-                     <h1 class="fashion_taital">Tai nghe In Ear</h1>
-                     <div class="fashion_section_2">
-                        <div class="row">
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Laptop</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/laptop-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Mobile</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/mobile-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Computers</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/computer-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+                     <%
+                     Next
+                     %>
             </div>
-            <a class="carousel-control-prev" href="#electronic_main_slider" role="button" data-slide="prev">
+            <a class="carousel-control-prev" href="#inear_main_slider" role="button" data-slide="prev">
             <i class="fa fa-angle-left"></i>
             </a>
-            <a class="carousel-control-next" href="#electronic_main_slider" role="button" data-slide="next">
+            <a class="carousel-control-next" href="#inear_main_slider" role="button" data-slide="next">
             <i class="fa fa-angle-right"></i>
             </a>
          </div>
+         <%end if%>
       </div>
       <!-- Tai nghe in ear section end -->
       <!-- Tai nghe on ear  section start -->
-      <div class="fashion_section">
-         <div id="electronic_main_slider" class="carousel slide" data-ride="carousel">
+      <div class="product_section">
+         <div id="onear_main_slider" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
-               <div class="carousel-item active">
+            <%
+                   strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable'and CategoryID=2"
+                     Set CountResult = connDB.execute(strSQL)
+
+                     totalRows = CLng(CountResult("count"))
+
+                     Set CountResult = Nothing
+                  ' lay ve tong so trang
+                     pages = Ceil(totalRows/limit)
+                     if pages<>0 then
+               slide_start = 1
+               SQL ="Select * from Products where Status = 'Enable' and CategoryID=2"
+               Set Result = connDB.execute(SQL)
+               For i= 0 To pages - 1
+            %>
+               <div class="carousel-item <% If i=0 then Response.write("active")%>">
                   <div class="container">
                      <h1 class="fashion_taital">Tai Nghe On Ear</h1>
-                     <div class="fashion_section_2">
+                     <div class="product_section_2">
                         <div class="row">
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Laptop</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/laptop-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
+                           <% 
+                              For j = slide_start To slide_start + limit - 1
+                                 if j > totalRows then exit for
+                                 %>
+                                 <div class="col-lg-4 col-sm-4">
+                                    <div class="box_main">
+                                       <h4 class="shirt_text"><%=Result("ProductName")%></h4>
+                                       <p class="price_text">Price  <span style="color: #262626;"><%=Result("Price")%></span></p>
+                                       <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
+                                       <div class="tshirt_img"><img src="images/tshirt-img.png"></div>
+                                       <div class="btn_main">
+                                          <div class="buy_bt"><a href="payment.asp">Buy Now</a></div>
+                                          <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
+                                          <div class="seemore_bt"><a href="productDetail.asp?id=<%=Result("ProductID")%>">See More</a></div>
+                                       </div>
+                                    </div>
                                  </div>
-                              </div>
+                                 <%
+                                 Result.MoveNext
+                              Next
+                              slide_start = slide_start + limit
+                              %>
                            </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Mobile</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/mobile-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Computers</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/computer-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
                            </div>
                         </div>
                      </div>
-                  </div>
-               </div>
-               <div class="carousel-item">
-                  <div class="container">
-                     <h1 class="fashion_taital">Tai Nghe On Ear</h1>
-                     <div class="fashion_section_2">
-                        <div class="row">
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Laptop</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/laptop-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Mobile</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/mobile-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Computers</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/computer-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="carousel-item">
-                  <div class="container">
-                     <h1 class="fashion_taital">Tai Nghe On Ear</h1>
-                     <div class="fashion_section_2">
-                        <div class="row">
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Laptop</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/laptop-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Mobile</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/mobile-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Computers</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="electronic_img"><img src="images/computer-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+                     <%
+                     Next
+                     %>
             </div>
-            <a class="carousel-control-prev" href="#electronic_main_slider" role="button" data-slide="prev">
+            <a class="carousel-control-prev" href="#onear_main_slider" role="button" data-slide="prev">
             <i class="fa fa-angle-left"></i>
             </a>
-            <a class="carousel-control-next" href="#electronic_main_slider" role="button" data-slide="next">
+            <a class="carousel-control-next" href="#onear_main_slider" role="button" data-slide="next">
             <i class="fa fa-angle-right"></i>
             </a>
          </div>
+         <%end if%>
       </div>
       <!-- Tai nghe on ear  section end -->
       <!-- Tai nghe over ear start -->
-      <div class="jewellery_section">
-         <div id="jewellery_main_slider" class="carousel slide" data-ride="carousel">
+      <div class="product_section">
+         <div id="overear_main_slider" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
-               <div class="carousel-item active">
+            <%
+                   strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable' and CategoryID=3"
+                     Set CountResult = connDB.execute(strSQL)
+
+                     totalRows = CLng(CountResult("count"))
+
+                     Set CountResult = Nothing
+                  ' lay ve tong so trang
+                     pages = Ceil(totalRows/limit)
+               if pages<>0 then
+               slide_start = 1
+               SQL ="Select * from Products where Status = 'Enable' and CategoryID=3"
+               Set Result = connDB.execute(SQL)
+               For i= 0 To pages - 1
+            %>
+               <div class="carousel-item <% If i=0 then Response.write("active")%>">
                   <div class="container">
-                     <h1 class="fashion_taital">Tai nghe Over Ear</h1>
-                     <div class="fashion_section_2">
+                     <h1 class="fashion_taital">Tai Nghe Over Ear</h1>
+                     <div class="product_section_2">
                         <div class="row">
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Jumkas</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="jewellery_img"><img src="images/jhumka-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
+                           <% 
+                              For j = slide_start To slide_start + limit - 1
+                                 if j > totalRows then exit for
+                                 %>
+                                 <div class="col-lg-4 col-sm-4">
+                                    <div class="box_main">
+                                       <h4 class="shirt_text"><%=Result("ProductName")%></h4>
+                                       <p class="price_text">Price  <span style="color: #262626;"><%=Result("Price")%></span></p>
+                                       <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
+                                       <div class="tshirt_img"><img src="images/tshirt-img.png"></div>
+                                       <div class="btn_main">
+                                          <div class="buy_bt"><a href="payment.asp">Buy Now</a></div>
+                                          <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
+                                          <div class="seemore_bt"><a href="productDetail.asp?id=<%=Result("ProductID")%>">See More</a></div>
+                                       </div>
+                                    </div>
                                  </div>
-                              </div>
+                                 <%
+                                 Result.MoveNext
+                              Next
+                              slide_start = slide_start + limit
+                              %>
                            </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Necklaces</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="jewellery_img"><img src="images/neklesh-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Kangans</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="jewellery_img"><img src="images/kangan-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
                            </div>
                         </div>
                      </div>
-                  </div>
-               </div>
-               <div class="carousel-item">
-                  <div class="container">
-                     <h1 class="fashion_taital">Tai nghe Over Ear</h1>
-                     <div class="fashion_section_2">
-                        <div class="row">
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Jumkas</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="jewellery_img"><img src="images/jhumka-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Necklaces</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="jewellery_img"><img src="images/neklesh-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Kangans</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="jewellery_img"><img src="images/kangan-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="carousel-item">
-                  <div class="container">
-                     <h1 class="fashion_taital">Tai nghe Over Ear</h1>
-                     <div class="fashion_section_2">
-                        <div class="row">
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Jumkas</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="jewellery_img"><img src="images/jhumka-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Necklaces</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="jewellery_img"><img src="images/neklesh-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-4 col-sm-4">
-                              <div class="box_main">
-                                 <h4 class="shirt_text">Kangans</h4>
-                                 <p class="price_text">Start Price  <span style="color: #262626;">$ 100</span></p>
-                                 <div class="jewellery_img"><img src="images/kangan-img.png"></div>
-                                 <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                    <div class="seemore_bt"><a href="#">See More</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+                     <%
+                     Next
+                     %>
             </div>
-            <a class="carousel-control-prev" href="#jewellery_main_slider" role="button" data-slide="prev">
+            <a class="carousel-control-prev" href="#overear_main_slider" role="button" data-slide="prev">
             <i class="fa fa-angle-left"></i>
             </a>
-            <a class="carousel-control-next" href="#jewellery_main_slider" role="button" data-slide="next">
+            <a class="carousel-control-next" href="#overear_main_slider" role="button" data-slide="next">
             <i class="fa fa-angle-right"></i>
             </a>
-            <div class="loader_main">
-               <div class="loader"></div>
-            </div>
          </div>
+         <%end if%>
       </div>
-      <!-- Tai nghe on ear  section end -->
-      
+      <!-- Tai nghe over ear  section end -->
+
       <!-- #include file="./layout/footer.asp" -->
       <!-- copyright section end -->
       <!-- Javascript files-->

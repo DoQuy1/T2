@@ -250,7 +250,7 @@ If (NOT IsEmpty(Session("mycarts"))) Then
                     </div>
                     <div class="modal-body">
                         <p>You must be logged in to get paid! 
-                        <br>Click continue to go to the login page, click cancel to cancel </p>
+                        <br>Click continue to go to the login page, click Close to cancel </p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"  id="cancelButton" data-bs-dismiss="modal">Close</button>
@@ -292,9 +292,15 @@ crossorigin="anonymous">
 }, 2000);
 
     $(document).ready(function() {
-       $("#myButton").click(function() {
-          $("#sub_checkout").val("sub_checkout");
-          $("#myForm").submit();
+       $("#myButton").click(function(event) {
+          var idcustomer = $("#checkCustomer").val();
+            if(idcustomer){
+              event.preventDefault()
+              $("#confirmModal").modal('show');
+            }
+            else{ 
+              $("#myForm").submit();
+            }
        });
     });
 

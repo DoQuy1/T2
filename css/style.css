@@ -549,7 +549,7 @@ a:hover {
 
 /* fashion section start */
 
-.fashion_section {
+.product_section {
     width: 100%;
     float: left;
     padding-bottom: 150px;
@@ -563,7 +563,7 @@ a:hover {
     font-weight: bold;
 }
 
-.fashion_section_2 {
+.product_section_2 {
     width: 100%;
     margin-top: 30px;
 }
@@ -685,18 +685,18 @@ a:hover {
     min-height: 293px;
 }
 
-#electronic_main_slider a.carousel-control-next {
+#inear_main_slider a.carousel-control-next {
     right: 615px;
     top: 105%;
 }
 
-#electronic_main_slider a.carousel-control-prev {
+#inear_main_slider a.carousel-control-prev {
     left: 615px;
     top: 105%;
 }
 
-#electronic_main_slider .carousel-control-next,
-#electronic_main_slider .carousel-control-prev {
+#inear_main_slider .carousel-control-next,
+#inear_main_slider .carousel-control-prev {
     width: 55px;
     height: 55px;
     background-color: #30302e;
@@ -705,10 +705,10 @@ a:hover {
     color: #ffffff;
 }
 
-#electronic_main_slider .carousel-control-next:focus,
-#electronic_main_slider .carousel-control-next:hover,
-#electronic_main_slider .carousel-control-prev:focus,
-#electronic_main_slider .carousel-control-prev:hover {
+#inear_main_slider .carousel-control-next:focus,
+#inear_main_slider .carousel-control-next:hover,
+#inear_main_slider .carousel-control-prev:focus,
+#inear_main_slider .carousel-control-prev:hover {
     color: #fff;
     background-color: #f26522;
 }
@@ -718,32 +718,25 @@ a:hover {
 
 
 /* jewellery section start */
-
-.jewellery_section {
-    width: 100%;
-    float: left;
-    padding-bottom: 50px;
-}
-
-.jewellery_img {
+.electronic_img {
     width: 100%;
     text-align: center;
     margin: 50px 0px;
     min-height: 293px;
 }
 
-#jewellery_main_slider a.carousel-control-next {
+#onear_main_slider a.carousel-control-next {
     right: 615px;
-    top: 75%;
+    top: 105%;
 }
 
-#jewellery_main_slider a.carousel-control-prev {
+#onear_main_slider a.carousel-control-prev {
     left: 615px;
-    top: 75%;
+    top: 105%;
 }
 
-#jewellery_main_slider .carousel-control-next,
-#jewellery_main_slider .carousel-control-prev {
+#onear_main_slider .carousel-control-next,
+#onear_main_slider .carousel-control-prev {
     width: 55px;
     height: 55px;
     background-color: #30302e;
@@ -752,14 +745,49 @@ a:hover {
     color: #ffffff;
 }
 
-#jewellery_main_slider .carousel-control-next:focus,
-#jewellery_main_slider .carousel-control-next:hover,
-#jewellery_main_slider .carousel-control-prev:focus,
-#jewellery_main_slider .carousel-control-prev:hover {
+#onear_main_slider .carousel-control-next:focus,
+#onear_main_slider .carousel-control-next:hover,
+#onear_main_slider .carousel-control-prev:focus,
+#onear_main_slider .carousel-control-prev:hover {
     color: #fff;
     background-color: #f26522;
 }
+/* overear start */
+.electronic_img {
+    width: 100%;
+    text-align: center;
+    margin: 50px 0px;
+    min-height: 293px;
+}
 
+#overear_main_slider a.carousel-control-next {
+    right: 615px;
+    top: 105%;
+}
+
+#overear_main_slider a.carousel-control-prev {
+    left: 615px;
+    top: 105%;
+}
+
+#overear_main_slider .carousel-control-next,
+#overear_main_slider .carousel-control-prev {
+    width: 55px;
+    height: 55px;
+    background-color: #30302e;
+    opacity: 1;
+    font-size: 30px;
+    color: #ffffff;
+}
+
+#overear_main_slider .carousel-control-next:focus,
+#overear_main_slider .carousel-control-next:hover,
+#overear_main_slider .carousel-control-prev:focus,
+#overear_main_slider .carousel-control-prev:hover {
+    color: #fff;
+    background-color: #f26522;
+}
+/* overear end */
 
 /* loader bar css start */
 
