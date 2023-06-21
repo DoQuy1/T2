@@ -22,24 +22,7 @@
       <!-- banner bg main start -->
       <div class="banner_bg_main">
          <!-- header top section start -->
-         <div class="container">
-            
-            <div class="header_section_top">
-               <div class="row">
-                  <div class="col-sm-12">
-                     <div class="custom_menu">
-                        <ul>
-                           <li><a href="#">Best Sellers</a></li>
-                           <li><a href="#">Gift Ideas</a></li>
-                           <li><a href="#">New Releases</a></li>
-                           <li><a href="#">Today's Deals</a></li>
-                           <li><a href="#">Customer Service</a></li>
-                        </ul>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+        
          <!-- header top section start -->
          <!-- logo section start -->
          <div class="logo_section">
@@ -69,9 +52,9 @@
                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Category 
                      </button>
                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Tai Nghe In Ear</a>
-                        <a class="dropdown-item" href="#">Tai Nghe On Ear</a>
-                        <a class="dropdown-item" href="#">Tai Nghe Over Ear</a>
+                        <a class="dropdown-item" href="#inear_main_slider">Tai Nghe In Ear</a>
+                        <a class="dropdown-item" href="#onear_main_slider">Tai Nghe On Ear</a>
+                        <a class="dropdown-item" href="#over_main_slider">Tai Nghe Over Ear</a>
                      </div>
                   </div>
                   <div class="main">
@@ -110,7 +93,7 @@
                               </button>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                  <%
-                                    If (NOT isnull(Session("CustomerID"))) AND (TRIM(Session("CustomerID"))<>"") Then
+                                    If (NOT IsEmpty(Session("CustomerID"))) Then
                                  %>
                                     <a class="dropdown-item" href="userDetail.asp?id=<%=Session("CustomerID")%>" style="color:black">Information</a>
                                     <a class="dropdown-item" href="purchaseForm.asp?id=<%=Session("CustomerID")%>" style="color:black">Purchase Form</a>
@@ -212,7 +195,7 @@
                                              <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
                                              <div class="tshirt_img"><img src="images/tshirt-img.png"></div>
                                              <div class="btn_main">
-                                                <div class="buy_bt"><a href="payment.asp">Buy Now</a></div>
+                                                <div class="buy_bt"><a href="payment.asp?productId=<%=Result("ProductID")%>">Buy Now</a></div>
                                                 <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
                                                 <div class="seemore_bt"><a href="productDetail.asp?id=<%=Result("ProductID")%>">See More</a></div>
                                              </div>
@@ -280,7 +263,7 @@
                                        <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
                                        <div class="tshirt_img"><img src="images/tshirt-img.png"></div>
                                        <div class="btn_main">
-                                          <div class="buy_bt"><a href="payment.asp">Buy Now</a></div>
+                                          <div class="buy_bt"><a href="payment.asp?productId=<%=Result("ProductID")%>">Buy Now</a></div>
                                           <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
                                           <div class="seemore_bt"><a href="productDetail.asp?id=<%=Result("ProductID")%>">See More</a></div>
                                        </div>
@@ -344,7 +327,7 @@
                                        <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
                                        <div class="tshirt_img"><img src="images/tshirt-img.png"></div>
                                        <div class="btn_main">
-                                          <div class="buy_bt"><a href="payment.asp">Buy Now</a></div>
+                                          <div class="buy_bt"><a href="payment.asp?productId=<%=Result("ProductID")%>">Buy Now</a></div>
                                           <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
                                           <div class="seemore_bt"><a href="productDetail.asp?id=<%=Result("ProductID")%>">See More</a></div>
                                        </div>
@@ -408,7 +391,7 @@
                                        <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
                                        <div class="tshirt_img"><img src="images/tshirt-img.png"></div>
                                        <div class="btn_main">
-                                          <div class="buy_bt"><a href="payment.asp">Buy Now</a></div>
+                                          <div class="buy_bt"><a href="payment.asp?productId=<%=Result("ProductID")%>">Buy Now</a></div>
                                           <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
                                           <div class="seemore_bt"><a href="productDetail.asp?id=<%=Result("ProductID")%>">See More</a></div>
                                        </div>
@@ -463,6 +446,7 @@
             $(this).remove(); 
          });
       }, 2000);
+
       </script>
    </body>
 </html>

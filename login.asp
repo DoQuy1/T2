@@ -22,17 +22,7 @@
             If not result.EOF Then
                 Session("CustomerID") = result("CustomerID")
                 Session("Success")="Login Successfully"
-                Dim referer
-                referer = Request.ServerVariables("HTTP_REFERER")
-
-                ' Kiểm tra xem có giá trị đường dẫn trước đó hay không
-                If Len(referer) > 0 Then
-                    ' Redirect về trang trước đó
-                    Response.Redirect referer
-                Else
-                    ' Nếu không có đường dẫn trước đó, redirect về trang mặc định
-                    Response.redirect("index.asp")
-                End If
+                Response.redirect("index.asp")
             Else
             ' dang nhap ko thanh cong
             Session("Error") = "Wrong email or password"
@@ -48,25 +38,19 @@
             If not result.EOF Then
                 Session("CustomerID") = result("CustomerID")
                 Session("Success")="Login Successfully"
-                
-                 Response.redirect("index.asp")
-                
-                
+                Response.redirect("index.asp")            
             Else
             Session("Error") = "Wrong username or password"
             End if
             result.Close()
             connDB.Close()
         End If
-    Else
-        ' false
-        Session("Error")="Please input email or username and password."
     End if
 
 %>
 
 
-
+<!-- #include file="./layout/header.asp" -->
 <link rel="stylesheet" href="./css/login.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <section class="h-100 gradient-form" style="background-color: #eee;">
@@ -127,3 +111,4 @@
       </div>
     </div>
   </section>
+  <!-- #include file="./layout/footer.asp" -->

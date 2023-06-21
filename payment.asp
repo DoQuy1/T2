@@ -1,6 +1,6 @@
 <!-- #include file="connect.asp" -->
 <%
-    If (Not isnull(Session("CustomerID")) OR TRIM(Session("CustomerID")) <>"") Then
+    If (not IsEmpty(Session("CustomerID"))) Then
         Dim Result 
         Dim userId 
         userId = Session("CustomerID")
@@ -26,7 +26,7 @@
 
 <%
 'lay ve danh sach product theo id trong my cart
-Dim idList, payments, totalProduct, subtotal, statusViews, rs
+Dim idList, payments, totalProduct, subtotal, statusViews, rs,sqlString
 If (NOT IsEmpty(Session("payment"))) Then
   statusViews = "d-none"
   statusButtons = "d-block"
@@ -42,7 +42,6 @@ If (NOT IsEmpty(Session("payment"))) Then
 			idList = idList & "," & List
 		End if                               
 	Next
-	Dim sqlString
 	sqlString = "Select * from Products where ProductID IN (" & idList &")"
 	connDB.Open()
 	set rs = connDB.execute(sqlString)
@@ -78,6 +77,14 @@ If (NOT IsEmpty(Session("payment"))) Then
     statusViews = "d-block"
     statusButtons = "d-none"
     totalProduct=0
+    idproduct=Request.QueryString("productId")
+
+	sqlString = "Select * from Products where ProductID="&idproduct&""
+	connDB.Open()
+	set rs = connDB.execute(sqlString)
+    ' Response.write(totalProduct)
+    totalProduct=1
+    subtotal=subtotal+CDbl(rs("Price"))
   End If
 '   Sub calSubtotal(rs)
 ' ' Do Something...
