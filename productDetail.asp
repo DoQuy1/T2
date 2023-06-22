@@ -105,7 +105,7 @@
     }
 
     function buyNow() {
-         document.getElementById('myForm').action = 'payment.asp';
+         document.getElementById('myForm').action = 'payment.asp?productId='+idProduct;
         document.getElementById('myForm').submit();
     }
 

@@ -78,13 +78,19 @@ If (NOT IsEmpty(Session("payment"))) Then
     statusButtons = "d-none"
     totalProduct=0
     idproduct=Request.QueryString("productId")
+    quantityValue= Request.Form("quantity")
 
 	sqlString = "Select * from Products where ProductID="&idproduct&""
 	connDB.Open()
 	set rs = connDB.execute(sqlString)
+    if(quantityValue<>"") then 
+    subtotal=subtotal+CDbl(rs("Price"))*Clng(quantityValue)
+    Else
+    subtotal=subtotal+CDbl(rs("Price"))
+    End if
     ' Response.write(totalProduct)
     totalProduct=1
-    subtotal=subtotal+CDbl(rs("Price"))
+
   End If
 '   Sub calSubtotal(rs)
 ' ' Do Something...
