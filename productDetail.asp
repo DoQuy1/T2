@@ -13,10 +13,32 @@
             cmdPrep.Parameters(0)=idProduct
             Set Result = cmdPrep.execute      
     End if    
+	Dim quantityValue
+	If Request.Form("quantity") <> "" Then
+		quantityValue = CInt(Request.Form("quantity"))
+	Else
+		quantityValue = 1
+	End If
 %>
 
 <!-- #include file="./layout/header.asp" -->
-
+<div class="container mt-4">
+    <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Product Details</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="index.asp">Home</a></li>
+                            <li class="breadcrumb-item active">Product Details</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+</div>
 
 	<div class="pd-wrap">
 		<div class="container">
@@ -40,14 +62,15 @@
 	        			<p><%=Result("Description")%></p>
 	        			<div class="product-count">
 	        				<label for="size">Quantity</label>
-	        				<form action="#" class="display-flex">
-							    <div class="qtyminus">-</div>
-							    <input type="text" name="quantity" value="1" class="qty">
-							    <div class="qtyplus">+</div>
+	        				<form id ="myForm"  method="post" action="">
+							    <div class="d-flex">
+								<div class="qtyminus" id="minus" onclick="decrement()"  >-</div>
+									<input id = "quantity" min =1 type="number" name="quantity" value="<%=quantityValue%>" class="qty">
+									<div class="qtyplus" id ="plus" onclick="increment()" >+</div>
+								</div>
+							<button type="button" onclick="addToCart()" class="round-black-btn">Add to Cart</button>
+    						<button type="button" onclick="buyNow()" class="round-black-btn">Buy Now</button>
 							</form>
-							<a href="#" class="round-black-btn">Add to Cart</a>
-							<a href="#" class="round-black-btn">Buy Now</a>
-
 	        			</div>
 	        		</div>
 	        	</div>
@@ -67,11 +90,38 @@
 			
 		</div>
 	</div>
+	
 	<!-- #include file="./layout/footer.asp" -->
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link rel="stylesheet" href="./css/productDetail.css">
+<script>
+    var idProduct = "<%=idProduct%>";
 
+    function addToCart() {
+       document.getElementById('myForm').action = 'addCart.asp?idproduct='+idProduct;
+        document.getElementById('myForm').submit();
+    
+    }
+
+    function buyNow() {
+         document.getElementById('myForm').action = 'payment.asp';
+        document.getElementById('myForm').submit();
+    }
+
+	function increment() {
+        var quantityInput = document.getElementById('quantity');
+        quantityInput.stepUp();
+        document.getElementById('myForm').submit();
+    }
+
+    function decrement() {
+        var quantityInput = document.getElementById('quantity');
+        quantityInput.stepDown();
+        document.getElementById('myForm').submit();
+    }
+	
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="	sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

@@ -5,6 +5,8 @@
     Dim preUrl
     preUrl = Request.ServerVariables("HTTP_REFERER")
     idProduct = Request.QueryString("idproduct")
+    quantities=Request.Form("quantity")
+    ' Response.write(quantities)
     ' Do Something...
     If (NOT IsNull(idProduct) and idProduct <> "") Then
         Dim cmdPrep, Result
@@ -26,11 +28,20 @@
                     if currentCarts.Exists(idProduct) = true then
                         'Response.Write("Key exists.")
                         Dim value
+                        if(quantities<>"") then
+                        value=Clng(currentCarts.Item(idProduct))+quantities
+                        Else
                         value = Clng(currentCarts.Item(idProduct))+1
+                        End if
                         currentCarts.Item(idProduct) = value                        
                     else
                        ' Response.Write("Key does not exist.")
+                       if(quantities<>"") then
+                        value=Clng(quantities)
+                        currentCarts.Add idProduct, value
+                        Else
                         currentCarts.Add idProduct, 1
+                        End if
                     end if 
                     'saving new session value
                     Set Session("mycarts") = currentCarts
@@ -40,7 +51,11 @@
                    'Response.Write("The Session is exists.")                                      
                 Else
                     Dim quantity
-                    quantity = 1                    
+                    if(quantities<>"") then
+                    quantity=Clng(quantities)
+                    Else
+                    quantity = 1   
+                    end if                 
                     Set mycarts = Server.CreateObject("Scripting.Dictionary")
                     mycarts.Add idProduct, quantity
                     'creating a session for my cart
@@ -57,7 +72,7 @@
             Result.Close()
             connDB.Close()
 
-           Response.redirect(preUrl)            
+        Response.redirect(preUrl)            
     End if
     'Dim mycarts
    'lay ve danh sach ID trong gio hang
