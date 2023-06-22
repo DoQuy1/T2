@@ -49,7 +49,7 @@
 	        	<div class="col-md-6">
 	        		<div id="slider" class="owl-carousel product-slider">
 						<div class="item">
-						  	<img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" />
+						  	<img src="<%=Result("Image")%>" />
 						</div>
 					</div>
 	        	</div>
@@ -59,7 +59,6 @@
 		        			<div class="product-name"><%=Result("ProductName")%></div>
 		        			<div class="product-price-discount"><span>$<%=Result("Price")%></span><span class="line-through">$29.00</span></div>
 		        		</div>
-	        			<p><%=Result("Description")%></p>
 	        			<div class="product-count">
 	        				<label for="size">Quantity</label>
 	        				<form id ="myForm"  method="post" action="">
@@ -76,17 +75,27 @@
 	        	</div>
 	        </div>
 	        <div class="product-info-tabs">
-		        <ul class="nav nav-tabs" id="myTab" role="tablist">
-				  	<li class="nav-item">
-				    	<a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
-				  	</li>
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="specification-tab" data-toggle="tab" href="#specification" role="tab" aria-controls="specification" aria-selected="false">Specification</a>
+					</li>
 				</ul>
+
 				<div class="tab-content" id="myTabContent">
-				  	<div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
-				  		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
-				  	</div>
+					<div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+						<!-- Description content goes here -->
+						<%=Result("Description")%>
+					</div>
+					<div class="tab-pane fade" id="specification" role="tabpanel" aria-labelledby="specification-tab">
+						<!-- Specification content goes here -->
+						<%=Result("Specification")%>
+					</div>
 				</div>
 			</div>
+			
 			
 		</div>
 	</div>
@@ -121,6 +130,15 @@
         document.getElementById('myForm').submit();
     }
 	
+	<script>
+    $(document).ready(function() {
+        $('#myTab a').on('click', function(event) {
+            event.preventDefault();
+            $(this).tab('show');
+        });
+    });
+</script>
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

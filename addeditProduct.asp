@@ -49,7 +49,7 @@ End If
                 brand = Result("Brand")
                 statuspd = Result("Status")
                 category = Result("CategoryID")
-                
+                specification=Result("Specification")
                 ' image = Result("image")
             End If
 
@@ -63,6 +63,7 @@ End If
         category = Form.Texts.Item("category")
         price = Form.Texts.Item("price")
         brand = Form.Texts.Item("brand")
+        specification=Form.Texts.Item("Specification")
         statuspd = "Enable"
         
         imagesrc = "/upload/" & filename
@@ -70,12 +71,12 @@ End If
         if (isnull (idproduct) OR trim(idproduct) = "") then idproduct=0 end if
 
         if (cint(idproduct)=0) then
-            if (NOT isnull(name) and name<>"" and NOT isnull(description) and description<>"" and NOT isnull(price) and price<>"" and NOT isnull(brand) and brand<>"" and NOT isnull(category) and category<>""  and NOT isnull(statuspd) and statuspd<>""and NOT isnull(filename) and filename<>"") then
+            if (NOT isnull(specification) and specification<>"" and NOT isnull(name) and name<>"" and NOT isnull(description) and description<>"" and NOT isnull(price) and price<>"" and NOT isnull(brand) and brand<>"" and NOT isnull(category) and category<>""  and NOT isnull(statuspd) and statuspd<>""and NOT isnull(filename) and filename<>"") then
                 Set cmdPrep = Server.CreateObject("ADODB.Command")
                 cmdPrep.ActiveConnection = connDB
                 cmdPrep.CommandType = 1
                 cmdPrep.Prepared = True
-                cmdPrep.CommandText = "INSERT INTO Products(ProductName,CategoryID,Description,Price,Image,Brand,Status) VALUES(?,?,?,?,?,?,?)"
+                cmdPrep.CommandText = "INSERT INTO Products(ProductName,CategoryID,Description,Price,Image,Brand,Status,Specification) VALUES(?,?,?,?,?,?,?,?)"
                 cmdPrep.parameters(0)=name
                 cmdPrep.parameters(1)=category
                 cmdPrep.parameters(2)=description
@@ -83,6 +84,7 @@ End If
                 cmdPrep.parameters(4)=imagesrc
                 cmdPrep.parameters(5)=brand
                 cmdPrep.parameters(6)=statuspd
+                cmdPrep.parameters(7)=specification
 
                 cmdPrep.execute
                 Session("Success") = "New product was added!"
@@ -91,19 +93,20 @@ End If
                 Session("Error") = "You have to input enough info"
             end if
         else
-            if (NOT isnull(name) and name<>"" and NOT isnull(description) and description<>"" and NOT isnull(price) and price<>"" and NOT isnull(brand) and brand<>"" and NOT isnull(category) and category<>"" and NOT isnull(statuspd) and statuspd<>"" and NOT isnull(filename) and filename<>"") then
+            if (NOT isnull(specification) and specification<>"" and NOT isnull(name) and name<>"" and NOT isnull(description) and description<>"" and NOT isnull(price) and price<>"" and NOT isnull(brand) and brand<>"" and NOT isnull(category) and category<>"" and NOT isnull(statuspd) and statuspd<>"" and NOT isnull(filename) and filename<>"") then
                 Set cmdPrep = Server.CreateObject("ADODB.Command")
                 cmdPrep.ActiveConnection = connDB
                 cmdPrep.CommandType = 1
                 cmdPrep.Prepared = True
-                cmdPrep.CommandText = "UPDATE Products SET CategoryID=?,ProductName=?,Description=?,Price=?,Image=?,Brand=? WHERE ProductID=?"
+                cmdPrep.CommandText = "UPDATE Products SET CategoryID=?,ProductName=?,Description=?,Price=?,Image=?,Brand=?,Specification=? WHERE ProductID=?"
                 cmdPrep.parameters(0)=category
                 cmdPrep.parameters(1)=name
                 cmdPrep.parameters(2)=description
                 cmdPrep.parameters(3)=price
                 cmdPrep.parameters(4)=imagesrc
                 cmdPrep.parameters(5)=brand
-                cmdPrep.parameters(6)=idproduct
+                cmdPrep.parameters(6)=specification
+                cmdPrep.parameters(7)=idproduct
 
                 cmdPrep.execute
                 Session("Success") = "The product was edited!"
@@ -200,6 +203,15 @@ End If
                 <div class="mb-3">
                     <label for="brand" class="form-label">Brand</label>
                     <input type="text" class="form-control" id="brand" name="brand"value="<%=brand%>">
+                </div> 
+                <div class="mb-3">
+                    <label for="MoTa">Specification</label>
+                    <textarea name="Specification" id="Specification" rows="10" cols="80">
+                    <%=specification%>
+                    </textarea>
+                    <script>
+                        CKEDITOR.replace( 'Specification' );
+                    </script>
                 </div> 
                 <div class="mb-3">
                     <label for="brand" class="form-label">Image</label>

@@ -140,7 +140,7 @@
                                     </th>
                                     <th style="width: 20%;">Product</th>
                                     <th>Category</th>
-                                    <th>Description</th>
+                                    <th class="text-center">Description</th>
                                     <th>Price</th>
                                     <th>Band</th>
                                     <th>Status</th>

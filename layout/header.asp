@@ -21,7 +21,7 @@
       <!-- font awesome -->
         <script src="https://kit.fontawesome.com/9f795c2c0d.js" crossorigin="anonymous"></script>
       <!-- owl stylesheets -->
-      
+      <script src="./ckeditor/ckeditor.js"></script>
       <link href="https://fonts.googleapis.com/css?family=Great+Vibes|Poppins:400,700&display=swap&subset=latin-ext" rel="stylesheet">
       <link rel="stylesheet" href="./css/owl.carousel.min.css">
       <link rel="stylesheet" href="./css/owl.theme.default.min.css">

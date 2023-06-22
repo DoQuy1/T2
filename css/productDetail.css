@@ -15,6 +15,9 @@
     text-transform: uppercase;
     letter-spacing: 2px;
 }
+ul, li, ol {
+	list-style: circle;
+}
 .heading-section h2 {
 	font-size: 32px;
     font-weight: 500;
