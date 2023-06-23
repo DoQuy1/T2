@@ -8,9 +8,9 @@ Server.ScriptTimeout = 1440 ' Limite de 24 minutos de execu��o de c�digo, 
 Const MaxFileSize = 10240000 ' Bytes. Aqui est� configurado o limite de 100 MB por upload (inclui todos os tamanhos de arquivos e conte�dos dos formul�rios).
 If Form.State = 0 Then
 
-	For each Key in Form.Texts.Keys
-		Response.Write "Elemento: " & Key & " = " & Form.Texts.Item(Key) & "<br />"
-	Next
+	' For each Key in Form.Texts.Keys
+	' 	Response.Write "Elemento: " & Key & " = " & Form.Texts.Item(Key) & "<br />"
+	' Next
 
 	For each Field in Form.Files.Items
 		' # Field.Filename : Nome do Arquivo que chegou.
@@ -18,7 +18,7 @@ If Form.State = 0 Then
 		Field.SaveAs Server.MapPath(".") & "\upload\" & Field.FileName
         Dim filename
         filename =Field.FileName
-		Response.Write "File name: " & Field.FileName & " uploaded. <br />"
+		' Response.Write "File name: " & Field.FileName & " uploaded. <br />"
 	Next
 End If
 %>
@@ -67,11 +67,16 @@ End If
         statuspd = "Enable"
         
         imagesrc = "/upload/" & filename
-        Response.write(imagesrc)
+        ' Response.write(imagesrc)
         if (isnull (idproduct) OR trim(idproduct) = "") then idproduct=0 end if
 
         if (cint(idproduct)=0) then
             if (NOT isnull(specification) and specification<>"" and NOT isnull(name) and name<>"" and NOT isnull(description) and description<>"" and NOT isnull(price) and price<>"" and NOT isnull(brand) and brand<>"" and NOT isnull(category) and category<>""  and NOT isnull(statuspd) and statuspd<>""and NOT isnull(filename) and filename<>"") then
+                sqlcheck = "Select Count(ProductID) as countcheck from Products Where ProductName='"&name&"'"
+                set resultcheck = connDB.execute(sqlcheck)
+                If resultcheck("countcheck") > 0 Then 
+                    Session("Error")= "product already exists. Please choose another product"
+                Else
                 Set cmdPrep = Server.CreateObject("ADODB.Command")
                 cmdPrep.ActiveConnection = connDB
                 cmdPrep.CommandType = 1
@@ -89,6 +94,7 @@ End If
                 cmdPrep.execute
                 Session("Success") = "New product was added!"
                 Response.redirect("productManagement.asp") 
+                End if
             else
                 Session("Error") = "You have to input enough info"
             end if

@@ -74,7 +74,7 @@
 
 %>
 <!-- #include file="./layout/header.asp" -->
-<div class="container">
+
     <div class="mt-4">
     <section class="content-header">
             <div class="container-fluid">
@@ -182,7 +182,7 @@
                                         </div>
                                     </td>
                                     <td class="align-middle">
-                                        <img src="/images/dress-shirt-img.png" alt="contact-img" title="contact-img" class="rounded me-3" style="width: 50%;" />
+                                        <img src="<%=Result("Image")%>" alt="contact-img" title="contact-img" class="rounded me-3" style="width: 50%;" />
                                         <p class="m-0 d-inline-block align-middle font-16">
                                             <a href="productDetail.asp?id=<%=Result("ProductID")%>" class="text-body"><%=Result("ProductName")%></a>
                                         </p>

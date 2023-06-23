@@ -52,9 +52,9 @@
                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Category 
                      </button>
                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#inear_main_slider">Tai Nghe In Ear</a>
-                        <a class="dropdown-item" href="#onear_main_slider">Tai Nghe On Ear</a>
-                        <a class="dropdown-item" href="#over_main_slider">Tai Nghe Over Ear</a>
+                        <a class="dropdown-item" href="#InEar_main_slider">Tai Nghe In Ear</a>
+                        <a class="dropdown-item" href="#OnEar_main_slider">Tai Nghe On Ear</a>
+                        <a class="dropdown-item" href="#OverEar_main_slider">Tai Nghe Over Ear</a>
                      </div>
                   </div>
                   <div class="main">
@@ -165,7 +165,7 @@
          <div id="main_slider" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                   <%
-                      strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable'"
+                     strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable'"
                      Set CountResult = connDB.execute(strSQL)
 
                      totalRows = CLng(CountResult("count"))
@@ -193,7 +193,7 @@
                                              <h4 class="shirt_text"><%=Result("ProductName")%></h4>
                                              <p class="price_text">Price  <span style="color: #262626;"><%=Result("Price")%></span></p>
                                              <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
-                                             <div class="tshirt_img"><img src="images/tshirt-img.png"></div>
+                                             <div class="tshirt_img"><img src="<%=Result("Image")%>"></div>
                                              <div class="btn_main">
                                                 <div class="buy_bt"><a href="payment.asp?productId=<%=Result("ProductID")%>">Buy Now</a></div>
                                                 <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
@@ -229,11 +229,18 @@
       </div>
       <!-- Tai nghe section end -->
       <!-- Tai nghe in ear section start -->
+      <%
+         strSQLCate = "SELECT * FROM Category"
+         Set CategoryResult = connDB.execute(strSQLCate)
+         do while not CategoryResult.EOF
+            ' body
+      %>
       <div class="product_section">
-         <div id="inear_main_slider" class="carousel slide" data-ride="carousel">
+         <div id="<%=CategoryResult("CategoryName")%>_main_slider" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
             <%
-                   strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable' and CategoryID=1"
+                  CategoryName = CategoryResult("CategoryName")
+                   strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable' and CategoryID=(Select CategoryID from Category where CategoryName='"&CategoryName&"')"
                   Set CountResult = connDB.execute(strSQL)
 
                   totalRows = CLng(CountResult("count"))
@@ -243,13 +250,13 @@
                   pages = Ceil(totalRows/limit)
                   if pages<>0 then
                slide_start = 1
-               SQL ="Select * from Products where Status = 'Enable'and CategoryID=1"
+               SQL ="Select * from Products where Status = 'Enable'and CategoryID=(Select CategoryID from Category where CategoryName='"&CategoryName&"')"
                Set Result = connDB.execute(SQL)
                For i= 0 To pages - 1
             %>
                <div class="carousel-item <% If i=0 then Response.write("active")%>">
                   <div class="container">
-                     <h1 class="fashion_taital">Tai Nghe In Ear</h1>
+                     <h1 class="fashion_taital">Tai Nghe <%=CategoryName%></h1>
                      <div class="product_section_2">
                         <div class="row">
                            <% 
@@ -261,7 +268,7 @@
                                        <h4 class="shirt_text"><%=Result("ProductName")%></h4>
                                        <p class="price_text">Price  <span style="color: #262626;"><%=Result("Price")%></span></p>
                                        <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
-                                       <div class="tshirt_img"><img src="images/tshirt-img.png"></div>
+                                       <div class="tshirt_img"><img src="<%=Result("Image")%>"></div>
                                        <div class="btn_main">
                                           <div class="buy_bt"><a href="payment.asp?productId=<%=Result("ProductID")%>">Buy Now</a></div>
                                           <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
@@ -282,145 +289,20 @@
                      Next
                      %>
             </div>
-            <a class="carousel-control-prev" href="#inear_main_slider" role="button" data-slide="prev">
+            <a class="carousel-control-prev" href="#<%=CategoryName%>_main_slider" role="button" data-slide="prev">
             <i class="fa fa-angle-left"></i>
             </a>
-            <a class="carousel-control-next" href="#inear_main_slider" role="button" data-slide="next">
+            <a class="carousel-control-next" href="#<%=CategoryName%>_main_slider" role="button" data-slide="next">
             <i class="fa fa-angle-right"></i>
             </a>
          </div>
          <%end if%>
       </div>
       <!-- Tai nghe in ear section end -->
-      <!-- Tai nghe on ear  section start -->
-      <div class="product_section">
-         <div id="onear_main_slider" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-            <%
-                   strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable'and CategoryID=2"
-                     Set CountResult = connDB.execute(strSQL)
-
-                     totalRows = CLng(CountResult("count"))
-
-                     Set CountResult = Nothing
-                  ' lay ve tong so trang
-                     pages = Ceil(totalRows/limit)
-                     if pages<>0 then
-               slide_start = 1
-               SQL ="Select * from Products where Status = 'Enable' and CategoryID=2"
-               Set Result = connDB.execute(SQL)
-               For i= 0 To pages - 1
-            %>
-               <div class="carousel-item <% If i=0 then Response.write("active")%>">
-                  <div class="container">
-                     <h1 class="fashion_taital">Tai Nghe On Ear</h1>
-                     <div class="product_section_2">
-                        <div class="row">
-                           <% 
-                              For j = slide_start To slide_start + limit - 1
-                                 if j > totalRows then exit for
-                                 %>
-                                 <div class="col-lg-4 col-sm-4">
-                                    <div class="box_main">
-                                       <h4 class="shirt_text"><%=Result("ProductName")%></h4>
-                                       <p class="price_text">Price  <span style="color: #262626;"><%=Result("Price")%></span></p>
-                                       <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
-                                       <div class="tshirt_img"><img src="images/tshirt-img.png"></div>
-                                       <div class="btn_main">
-                                          <div class="buy_bt"><a href="payment.asp?productId=<%=Result("ProductID")%>">Buy Now</a></div>
-                                          <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
-                                          <div class="seemore_bt"><a href="productDetail.asp?id=<%=Result("ProductID")%>">See More</a></div>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <%
-                                 Result.MoveNext
-                              Next
-                              slide_start = slide_start + limit
-                              %>
-                           </div>
-                           </div>
-                        </div>
-                     </div>
-                     <%
-                     Next
-                     %>
-            </div>
-            <a class="carousel-control-prev" href="#onear_main_slider" role="button" data-slide="prev">
-            <i class="fa fa-angle-left"></i>
-            </a>
-            <a class="carousel-control-next" href="#onear_main_slider" role="button" data-slide="next">
-            <i class="fa fa-angle-right"></i>
-            </a>
-         </div>
-         <%end if%>
-      </div>
-      <!-- Tai nghe on ear  section end -->
-      <!-- Tai nghe over ear start -->
-      <div class="product_section">
-         <div id="overear_main_slider" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-            <%
-                   strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable' and CategoryID=3"
-                     Set CountResult = connDB.execute(strSQL)
-
-                     totalRows = CLng(CountResult("count"))
-
-                     Set CountResult = Nothing
-                  ' lay ve tong so trang
-                     pages = Ceil(totalRows/limit)
-               if pages<>0 then
-               slide_start = 1
-               SQL ="Select * from Products where Status = 'Enable' and CategoryID=3"
-               Set Result = connDB.execute(SQL)
-               For i= 0 To pages - 1
-            %>
-               <div class="carousel-item <% If i=0 then Response.write("active")%>">
-                  <div class="container">
-                     <h1 class="fashion_taital">Tai Nghe Over Ear</h1>
-                     <div class="product_section_2">
-                        <div class="row">
-                           <% 
-                              For j = slide_start To slide_start + limit - 1
-                                 if j > totalRows then exit for
-                                 %>
-                                 <div class="col-lg-4 col-sm-4">
-                                    <div class="box_main">
-                                       <h4 class="shirt_text"><%=Result("ProductName")%></h4>
-                                       <p class="price_text">Price  <span style="color: #262626;"><%=Result("Price")%></span></p>
-                                       <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
-                                       <div class="tshirt_img"><img src="images/tshirt-img.png"></div>
-                                       <div class="btn_main">
-                                          <div class="buy_bt"><a href="payment.asp?productId=<%=Result("ProductID")%>">Buy Now</a></div>
-                                          <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
-                                          <div class="seemore_bt"><a href="productDetail.asp?id=<%=Result("ProductID")%>">See More</a></div>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <%
-                                 Result.MoveNext
-                              Next
-                              slide_start = slide_start + limit
-                              %>
-                           </div>
-                           </div>
-                        </div>
-                     </div>
-                     <%
-                     Next
-                     %>
-            </div>
-            <a class="carousel-control-prev" href="#overear_main_slider" role="button" data-slide="prev">
-            <i class="fa fa-angle-left"></i>
-            </a>
-            <a class="carousel-control-next" href="#overear_main_slider" role="button" data-slide="next">
-            <i class="fa fa-angle-right"></i>
-            </a>
-         </div>
-         <%end if%>
-      </div>
-      <!-- Tai nghe over ear  section end -->
-
+      <%
+         CategoryResult.MoveNext
+       Loop
+      %>
       <!-- #include file="./layout/footer.asp" -->
       <!-- copyright section end -->
       <!-- Javascript files-->
