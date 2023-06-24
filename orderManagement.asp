@@ -1,4 +1,4 @@
-
+<%@LANGUAGE="VBSCRIPT" CODEPAGE="65001"%>
 <!-- #include file="connect.asp" -->
 <%
 ' ham lam tron so nguyen
@@ -43,9 +43,14 @@
     fromDate = Request.QueryString("from_date")
     toDate = Request.QueryString("to_date")
     connDB.Open()
-    if(trim(fromDate) <> "") and (NOT IsEmpty(fromDate)) and trim(toDate) <> "" and (NOT IsEmpty(toDate)) then
+    if(trim(fromDate) <> "") and (NOT IsEmpty(fromDate)) and trim(toDate) <> "" and (NOT IsEmpty(toDate) ) then
         strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' "
         currentUrl = "orderManagement.asp?from_date="&fromDate&"&to_date="&toDate&"&"
+    Else
+        if(trim(inputsearch) = "") or (IsEmpty(inputsearch)) or (trim(optionsearch) = "") or (IsEmpty(optionsearch)) then
+        strSQL = "SELECT COUNT(OrderID) AS count FROM Orders "
+        currentUrl = "orderManagement.asp?"
+        End if
     end if
     if(trim(inputsearch) <> "") and (NOT IsEmpty(inputsearch)) and trim(optionsearch) <> "" and (NOT IsEmpty(optionsearch)) then
         
@@ -53,25 +58,26 @@
       Case 0
       strSQL = "SELECT COUNT(OrderID) AS count FROM Orders "
       Case 1 
-      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like '%"&inputsearch&"%') "
+      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like N'%"&inputsearch&"%') "
       Case 2
       strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where CustomerID IN(Select CustomerID From Customers where Username Like '%"&inputsearch&"%') "
       Case 3
-      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where PaymentMethodID IN (Select PaymentID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') "
+      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where PaymentMethodID = (Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') "
       Case 4
       strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where Status '%"&inputsearch&"%' "
       Case 5
       strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where ShippAddress '%"&inputsearch&"%' "
       Case 6
       strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where Price <= "&inputsearch&" "
-    End Select
+        End Select
         currentUrl = "orderManagement.asp?input-search="&inputsearch&"&option-search="&optionsearch&"&"
-    end if
-
-    if(trim(inputsearch) = "") and (IsEmpty(inputsearch)) and (trim(optionsearch) = "") and (IsEmpty(optionsearch)) and (trim(toDate) = "") and (IsEmpty(toDate)) and (trim(fromDate) = "") and (IsEmpty(fromDate)) then
+    Else
+        if(trim(fromDate) = "") or (IsEmpty(fromDate)) or (trim(toDate) = "") or (IsEmpty(toDate)) then
         strSQL = "SELECT COUNT(OrderID) AS count FROM Orders "
         currentUrl = "orderManagement.asp?"
+        End if
     end if
+
     
     Set CountResult = connDB.execute(strSQL)
 
@@ -119,7 +125,7 @@
                                 <input type="number" style="width:70px;height:38px" class="form-control " id="pageSize" name="pageSize" value="<%=pageSize%>" min="1">
                             </div>
                         </form>
-                        <button class="btn btn-danger mb-2" id="deleteButton" style="display: none;"><a data-bs-toggle="modal" data-bs-target="#confirm-delete" title="Delete">Delete Selected Items</a></button>
+                        <button class="btn btn-danger mb-2" id="deleteButton" style="display: none;"><a data-bs-toggle="modal" data-bs-target="#confirm-deletes" title="Deletes">Deletes Selected Items</a></button>
                     </div>
                     <div class="col-sm-6 ">
                            <form class="form-inline mr-4" action="" style="justify-content: flex-end;">
@@ -164,7 +170,7 @@
         </div>
     </form>
             
-                <form action="deleteProduct.asp" id="delete_products" method=post>
+                <form action="deleteOrder.asp" id="delete_products" method=post>
                 <div class="table-responsive">
                     <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
                         <thead class="table-light">
@@ -198,11 +204,11 @@
                                       Case 0
                                       cmdPrep.CommandText = "SELECT * FROM Orders ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 1 
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like '%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like N'%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 2
                                       cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Username Like '%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 3
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where PaymentMethodID IN(Select PaymentID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where PaymentMethodID=(Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 4
                                       cmdPrep.CommandText = "SELECT * FROM Orders Where Status '%"&inputsearch&"%' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 5
@@ -210,13 +216,20 @@
                                       Case 6
                                       cmdPrep.CommandText = "SELECT * FROM Orders Where Price <= "&inputsearch&" ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                     End Select
+                                    Else
+                                        if(trim(fromDate) = "") or (IsEmpty(fromDate)) or (trim(toDate) = "") or (IsEmpty(toDate)) then
+                                        cmdPrep.CommandText = "SELECT * FROM Orders ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                        end if
                                     end if
+
                                     if(trim(fromDate) <> "") and (NOT IsEmpty(fromDate)) and trim(toDate) <> "" and (NOT IsEmpty(toDate)) then
                                         cmdPrep.CommandText = "SELECT * FROM Orders Where OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY "
+                                    Else
+                                        if(trim(inputsearch) = "") or (IsEmpty(inputsearch)) or (trim(optionsearch) = "") or (IsEmpty(optionsearch)) then
+                                        cmdPrep.CommandText = "SELECT * FROM Orders ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                        end if
                                     end if
-                                    if(trim(inputsearch) = "") and (IsEmpty(inputsearch)) and (trim(optionsearch) = "") and (IsEmpty(optionsearch)) and (trim(toDate) = "") and (IsEmpty(toDate)) and (trim(fromDate) = "") and (IsEmpty(fromDate)) then
-                                    cmdPrep.CommandText = "SELECT * FROM Orders ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
-                                    end if
+                                    
                                     cmdPrep.parameters.Append cmdPrep.createParameter("offset",3,1, ,offset)
                                     cmdPrep.parameters.Append cmdPrep.createParameter("limit",3,1, , pageSize)
                                     Set Result = cmdPrep.execute
@@ -231,7 +244,7 @@
                                     </td>
                                     <td class="align-middle">
                                         <p class="m-0 d-inline-block align-middle font-16">
-                                            <a href="orderDetail.asp?orderId=<%=Result("OrderID")%>" class="text-body"><%=Result("OrderID")%></a>
+                                            <a href="orderDetail.asp?orderId=<%=Result("OrderID")%>" class="text-body">#<%=Result("OrderID")%></a>
                                         </p>
                                     </td>
                                          <%
@@ -281,7 +294,7 @@
                                     </td>
 
                                     <td class="align-middle" >
-                                        <a href="#"><i class="fa-regular fa-pen-to-square"></i></a>
+                                        <a href="editOrder.asp?orderId=<%=Result("OrderID")%>"><i class="fa-regular fa-pen-to-square"></i></a>
                                         <a data-href="deleteOrder.asp?orderId=<%=Result("OrderID")%>" data-bs-toggle="modal" data-bs-target="#confirm-delete" title="Delete"><i class="fa-regular fa-trash-can" style="cursor: pointer;color:#007bff"></i></a>
                                     </td>
                                 </tr>
@@ -335,6 +348,23 @@
                     </div>
                 </div>
             </div>
+            <div class="modal" tabindex="-1" id="confirm-deletes">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Deletes Confirmation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a class="btn btn-danger btn-deletes">Deletes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
     </div> <!-- end col -->
 </div>
@@ -348,11 +378,11 @@
         <script>
                 $(document).ready(function() {
                 $("#deleteButton").click(function() {
-                    $("#confirm-delete").modal('show');
+                    $("#confirm-deletes").modal('show');
                 });
 
-                $(".btn-delete").click(function() {
-                    $("#confirm-delete").modal('hide');
+                $(".btn-deletes").click(function() {
+                    $("#confirm-deletes").modal('hide');
                     $("#delete_products").submit();
                 });
                 });

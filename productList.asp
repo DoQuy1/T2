@@ -19,7 +19,7 @@
     end function
 ' trang hien tai
     page = Request.QueryString("page")
-    limit=10
+    limit=9
     categoryid = Request.QueryString("categoryid")
     inputsearch=Request.QueryString("input-search")
     if(trim(page) = "") or (isnull(page)) then
@@ -69,7 +69,7 @@
     }
 </style>
 <body>
-<div class="container mt-4">
+<div class="container mt-4" style="background: #f9f9f9;">
     <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
@@ -87,7 +87,7 @@
         </section>
 </div>
 
-<div class="container bootdey">
+<div class="container bootdey"style="background: #f9f9f9;" >
     <div class="col-md-3">
         <form id="formsearch" action="">
         <section class="panel">
@@ -176,7 +176,7 @@
             <div class="col-md-4">
                 <section class="panel">
                     <div class="pro-img-box">
-                        <img src="https://www.bootdey.com/image/250x220/FFB6C1/000000" alt="" />
+                        <img src="<%=Result("Image")%>" alt="Image" />
                         <a href="addCart.asp?idproduct=<%=Result("ProductID")%>" class="adtocart">
                             <i class="fa fa-shopping-cart"></i>
                         </a>
