@@ -642,114 +642,8 @@ a:hover {
     color: #f26522;
 }
 
-#main_slider a.carousel-control-next {
-    right: 615px;
-    top: 105%;
-}
-
-#main_slider a.carousel-control-prev {
-    left: 615px;
-    top: 105%;
-}
-
-#main_slider .carousel-control-next,
-#main_slider .carousel-control-prev {
-    width: 55px;
-    height: 55px;
-    background-color: #30302e;
-    opacity: 1;
-    font-size: 30px;
-    color: #ffffff;
-}
-
-#main_slider .carousel-control-next:focus,
-#main_slider .carousel-control-next:hover,
-#main_slider .carousel-control-prev:focus,
-#main_slider .carousel-control-prev:hover {
-    color: #fff;
-    background-color: #f26522;
-}
 
 
-/* fashion section end */
-
-
-/* electronic section start */
-
-.electronic_img {
-    width: 100%;
-    text-align: center;
-    margin: 50px 0px;
-    min-height: 293px;
-}
-
-#InEar_main_slider a.carousel-control-next {
-    right: 615px;
-    top: 105%;
-}
-
-#InEar_main_slider a.carousel-control-prev {
-    left: 615px;
-    top: 105%;
-}
-
-#InEar_main_slider .carousel-control-next,
-#InEar_main_slider .carousel-control-prev {
-    width: 55px;
-    height: 55px;
-    background-color: #30302e;
-    opacity: 1;
-    font-size: 30px;
-    color: #ffffff;
-}
-
-#InEar_main_slider .carousel-control-next:focus,
-#InEar_main_slider .carousel-control-next:hover,
-#InEar_main_slider .carousel-control-prev:focus,
-#InEar_main_slider .carousel-control-prev:hover {
-    color: #fff;
-    background-color: #f26522;
-}
-
-
-/* electronic section end */
-
-
-/* jewellery section start */
-.electronic_img {
-    width: 100%;
-    text-align: center;
-    margin: 50px 0px;
-    min-height: 293px;
-}
-
-#OnEar_main_slider a.carousel-control-next {
-    right: 615px;
-    top: 105%;
-}
-
-#OnEar_main_slider a.carousel-control-prev {
-    left: 615px;
-    top: 105%;
-}
-
-#OnEar_main_slider .carousel-control-next,
-#OnEar_main_slider .carousel-control-prev {
-    width: 55px;
-    height: 55px;
-    background-color: #30302e;
-    opacity: 1;
-    font-size: 30px;
-    color: #ffffff;
-}
-
-#OnEar_main_slider .carousel-control-next:focus,
-#OnEar_main_slider .carousel-control-next:hover,
-#OnEar_main_slider .carousel-control-prev:focus,
-#OnEar_main_slider .carousel-control-prev:hover {
-    color: #fff;
-    background-color: #f26522;
-}
 /* overear start */
 .electronic_img {
     width: 100%;
@@ -758,18 +652,18 @@ a:hover {
     min-height: 293px;
 }
 
-#OverEar_main_slider a.carousel-control-next {
+.carousel a.carousel-control-next {
     right: 615px;
     top: 105%;
 }
 
-#OverEar_main_slider a.carousel-control-prev {
+.carousel a.carousel-control-prev {
     left: 615px;
     top: 105%;
 }
 
-#OverEar_main_slider .carousel-control-next,
-#OverEar_main_slider .carousel-control-prev {
+.carousel .carousel-control-next,
+.carousel .carousel-control-prev {
     width: 55px;
     height: 55px;
     background-color: #30302e;
@@ -778,10 +672,10 @@ a:hover {
     color: #ffffff;
 }
 
-#OverEar_main_slider .carousel-control-next:focus,
-#OverEar_main_slider .carousel-control-next:hover,
-#OverEar_main_slider .carousel-control-prev:focus,
-#OverEar_main_slider .carousel-control-prev:hover {
+.carousel .carousel-control-next:focus,
+.carousel .carousel-control-next:hover,
+.carousel .carousel-control-prev:focus,
+.carousel .carousel-control-prev:hover {
     color: #fff;
     background-color: #f26522;
 }

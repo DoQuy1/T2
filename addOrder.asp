@@ -4,7 +4,11 @@
     Set payments = Session("payment")
     address = Request.Form("address")
     paymentMethodID = Request.Form("paymentMethod")
+    if(IsEmpty(Session("admin"))) then
     customerID =Session("CustomerID")
+    Else
+    customerID =Session("admin")
+    End if
     totalAmount=Session("totalAmount")
     orderDate = FormatDateTime(Now(), vbGeneralDate)  ' Lấy ngày hiện tại và định dạng thành chuỗi ngày tháng
     Response.write(customerID)
@@ -127,7 +131,7 @@
             Session("Success") = "Order was added!"
             ' Hoàn thành giao dịch
             connDB.CommitTrans
-            Response.Redirect("purchaseForm.asp")
+            Response.Redirect("purchaseForm.asp?id=<%=customerID%>")
         Else
             connDB.RollbackTrans
             Response.Write("Error Save (" & Err.Description & ")")

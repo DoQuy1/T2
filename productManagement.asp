@@ -226,8 +226,8 @@
                                         <%
                                             end if
                                         %>
-                                        <a href="addeditProduct.asp?idproduct=<%=Result("ProductID")%>"><i class="fa-regular fa-pen-to-square"></i></a>
-                                        <a data-href="deleteProduct.asp?idproduct=<%=Result("ProductID")%>" data-bs-toggle="modal" data-bs-target="#confirm-delete" title="Delete"><i class="fa-regular fa-trash-can" style="cursor: pointer;color:#007bff"></i></a>
+                                        <a href="addeditProduct.asp?idproduct=<%=Result("ProductID")%>"><i class="fa-regular fa-pen-to-square" style="color:#28a745"></i></a>
+                                        <a data-href="deleteProduct.asp?idproduct=<%=Result("ProductID")%>" data-bs-toggle="modal" data-bs-target="#confirm-delete" title="Delete"><i class="fa-regular fa-trash-can" style="cursor: pointer;color:#dc3545"></i></a>
                                     </td>
                                 </tr>
                                 <%

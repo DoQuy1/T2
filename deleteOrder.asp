@@ -11,7 +11,7 @@
 
     orderId = Request.QueryString("orderId")
     connDB.Open()
-    if(isnull(Session("CustomerID")) OR trim(Session("CustomerID"))="") then 
+    if(isnull(Session("admin")) OR trim(Session("admin"))="") then 
         Response.redirect("Login.asp")
         Response.End
     end if

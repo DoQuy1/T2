@@ -43,18 +43,35 @@
                      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                      <a href="index.asp">Home</a>
                      <a href="productList.asp">Danh sách sản phẩm</a>
+                     <%
+                        if(Not IsEmpty(Session("admin"))) then
+                     %>
                      <a href="userManagement.asp">Quản lý tài khoản người dùng</a>
                      <a href="productManagement.asp">Quản lý sản phẩm</a>
                      <a href="orderManagement.asp">Quản lý hóa đơn</a>
+                     <%
+                        end if
+                     %>
                   </div>
                   <span class="toggle_icon" onclick="openNav()"><img src="images/toggle-icon.png"></span>
                   <div class="dropdown">
                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Category 
                      </button>
                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#InEar_main_slider">Tai Nghe In Ear</a>
-                        <a class="dropdown-item" href="#OnEar_main_slider">Tai Nghe On Ear</a>
-                        <a class="dropdown-item" href="#OverEar_main_slider">Tai Nghe Over Ear</a>
+                        <%
+                           Set cmdcategory = Server.CreateObject("ADODB.Command")
+                           cmdcategory.ActiveConnection = connDB
+                           cmdcategory.CommandType = 1
+                           cmdcategory.Prepared = True
+                           cmdcategory.CommandText="Select * from Category"
+                           Set ResultCategory = cmdcategory.execute
+                           Do While Not ResultCategory.EOF
+                        %>
+                           <a class="dropdown-item" href="#<%=ResultCategory("CategoryName")%>_main_slider">Tai Nghe <%=ResultCategory("CategoryName")%></a>
+                        <%
+                           ResultCategory.MoveNext
+                           loop
+                        %>
                      </div>
                   </div>
                   <div class="main">
@@ -98,10 +115,16 @@
                                     <a class="dropdown-item" href="userDetail.asp?id=<%=Session("CustomerID")%>" style="color:black">Information</a>
                                     <a class="dropdown-item" href="purchaseForm.asp?id=<%=Session("CustomerID")%>" style="color:black">Purchase Form</a>
                                     <a class="dropdown-item" href="logout.asp" style="color:black">Logout</a>
-                                 <%                        
+                                 <%                     
+                                    ElseIf (NOT IsEmpty(Session("admin"))) Then
+                                 %>           
+                                    <a class="dropdown-item" href="userDetail.asp?id=<%=Session("admin")%>" style="color:black">Information</a>
+                                    <a class="dropdown-item" href="purchaseForm.asp?id=<%=Session("admin")%>" style="color:black">Purchase Form</a>
+                                    <a class="dropdown-item" href="logout.asp" style="color:black">Logout</a>     
+                                 <%
                                     Else
-                                 %>                
-                                    <a class="dropdown-item" href="/login.asp" style="color:black">Login</a>
+                                 %>
+                                 <a class="dropdown-item" href="/login.asp" style="color:black">Login</a>
                                  <%
                                     End If
                                  %>

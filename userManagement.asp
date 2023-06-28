@@ -1,4 +1,4 @@
-
+<%@LANGUAGE="VBSCRIPT" CODEPAGE="65001"%>
 <!-- #include file="connect.asp" -->
 <%
 ' ham lam tron so nguyen
@@ -144,7 +144,7 @@
                                             <label class="form-check-label" for="customCheck-all">&nbsp;</label>
                                         </div>
                                     </th>
-                                    <th style="width: 20%;">Name</th>
+                                    <th>Name</th>
                                     <th>Address</th>
                                     <th>Phone</th>
                                     <th>Email</th>
@@ -192,9 +192,8 @@
                                         </div>
                                     </td>
                                     <td class="align-middle">
-                                        <img src="/images/dress-shirt-img.png" alt="contact-img" title="contact-img" class="rounded me-3" style="width: 50%;" />
-                                        <p class="m-0 d-inline-block align-middle font-16">
-                                            <a href="productDetail.asp?id=" class="text-body"><%=Result("Name")%></a>
+                                        <p class="m-0 d-inline-block align-middle ">
+                                            <a href="userDetail.asp?id=<%=Result("CustomerID")%>" class="text-body"><%=Result("Name")%></a>
                                         </p>
                                     </td>
                                     <td class="align-middle">
@@ -216,16 +215,16 @@
                                      <%
                                             if (Result("Status") = "Enable") then
                                         %>
-                                            <a href="isStatus.asp?idproduct="><i class="fa-regular fa-eye"></i></a>
+                                            <a href="isStatus.asp?id=<%=Result("CustomerID")%>"><i class="fa-regular fa-eye"></i></a>
                                         <%
                                             else 
                                         %>
-                                        <a href="isStatus.asp?idproduct="><i class="fa-regular fa-eye-slash"></i></a>
+                                        <a href="isStatus.asp?id=<%=Result("CustomerID")%>"><i class="fa-regular fa-eye-slash"></i></a>
                                         <%
                                             end if
                                         %>
-                                        <a href="addeditProduct.asp?idproduct="><i class="fa-regular fa-pen-to-square"></i></a>
-                                        <a data-href="deleteProduct.asp?idproduct=" data-bs-toggle="modal" data-bs-target="#confirm-delete" title="Delete"><i class="fa-regular fa-trash-can" style="cursor: pointer;color:#007bff"></i></a>
+                                        <a href="editUser.asp?id=<%=Result("CustomerID")%>"><i class="fa-regular fa-pen-to-square" style="color:#28a745"></i></a>
+                                        <a data-href="deleteUser.asp?id=<%=Result("CustomerID")%>" data-bs-toggle="modal" data-bs-target="#confirm-delete" title="Delete"><i class="fa-regular fa-trash-can" style="cursor: pointer;color:#dc3545"></i></a>
                                     </td>
                                 </tr>
                                 <%

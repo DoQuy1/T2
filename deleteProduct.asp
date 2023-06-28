@@ -9,7 +9,7 @@
     next
     Response.write(count)
     idproduct = Request.QueryString("idproduct")
-    if(isnull(Session("CustomerID")) OR trim(Session("CustomerID"))="") then 
+    if(isnull(Session("admin")) OR trim(Session("admin"))="") then 
         Response.redirect("Login.asp")
         Response.End
     end if

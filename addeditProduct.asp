@@ -26,7 +26,7 @@ End If
  
     connDB.Open()
     Set categoryResult = connDB.execute("Select * from Category")
-    If (isnull(Session("CustomerID")) OR TRIM(Session("CustomerID")) = "") Then
+    If (isnull(Session("admin")) OR TRIM(Session("admin")) = "") Then
         Response.redirect("login.asp")
     End If
     If (Request.ServerVariables("REQUEST_METHOD") = "GET") THEN        
@@ -124,7 +124,7 @@ End If
     End If    
 %>
 <!-- #include file="./layout/header.asp" -->
-<link href="upload.css" rel="stylesheet" type="text/css" />
+
         <div class="container mt-4">
             <section class="content-header">
                     <div class="container-fluid">

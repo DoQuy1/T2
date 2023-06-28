@@ -1,6 +1,7 @@
 <!-- #include file="./layout/header.asp" -->
    <!--#include file="connect.asp"-->
 <%
+
 'lay ve danh sach product theo id trong my cart
 Dim idList, mycarts, totalProduct, subtotal, statusViews, rs
 If (NOT IsEmpty(Session("mycarts"))) Then
@@ -77,7 +78,7 @@ If (NOT IsEmpty(Session("mycarts"))) Then
 
 <div class="container">
   <%
-    If (isnull(Session("CustomerID")) OR TRIM(Session("CustomerID")) = "") Then
+    If (isnull(Session("CustomerID")) and isnull(Session("admin"))) Then
           Response.Write("<input hidden id='checkCustomer' name='checkCustomer' value='checkuser'")
     Else
       Response.Write("<input hidden id='checkCustomer' name='checkCustomer' ")
@@ -124,7 +125,8 @@ If (NOT IsEmpty(Session("mycarts"))) Then
                                   <input id="checkitem"type="checkbox" name="cb-selector" value="<%=rs("ProductID")%>" data-totalprice="<%=rs("Price")*mycarts.Item(CStr(rs("ProductID")))%>">
                                 </td>
                                 <td width="90">
-                                    <div class="cart-product-imitation">
+                                    <div class="">
+                                      <img src="<%=rs("Image")%>" alt="" >
                                     </div>
                                 </td>
                                 <td class="desc">
@@ -133,9 +135,6 @@ If (NOT IsEmpty(Session("mycarts"))) Then
                                         <%=rs("ProductName")%>
                                     </a>
                                     </h3>
-                                    <p class="small">
-                                        <%=rs("Description")%>
-                                    </p>
                                     <p class="small">
                                         <%=rs("Brand")%>
                                     </p>
@@ -190,11 +189,17 @@ If (NOT IsEmpty(Session("mycarts"))) Then
                 %> 
 
                  <div class="ibox-content">
-                    <input type="hidden" name="sub_checkout" id="sub_checkout" value="">
-                    <input type="submit" id="checkout" name="checkout" value="Checkout" class="btn btn-primary btn-md pull-right mr-2  <%= statusButtons %>"></input>
-                    <input type="submit" name="update" value="Update" class="mr-2 pull-right btn btn-warning  btn-mds text-white col-lg-2 <%= statusButtons %>"
-                    data-mdb-ripple-color="dark"/>
-                    <a href="productList.asp"class="btn btn-white"><i class="fa fa-arrow-left"></i> Continue shopping</a>
+                    <div class="row">
+                        <div class="col">
+                          <a href="productList.asp"class="btn btn-white"><i class="fa fa-arrow-left"></i> Continue shopping</a>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                          <input type="hidden" name="sub_checkout" id="sub_checkout" value="">
+                          <input type="submit" id="checkout" name="checkout" value="Checkout" class="btn btn-primary btn-md pull-right mr-2  <%= statusButtons %>"></input>
+                          <input type="submit" name="update" value="Update" class="mr-2 pull-right btn btn-warning  btn-md text-white <%= statusButtons %>"
+                          data-mdb-ripple-color="dark"/>
+                        </div>
+                    </div>
                 </div>
               </form>
             </div>

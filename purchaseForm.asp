@@ -9,11 +9,17 @@
         end if
     end function
 
-      If (isnull(Session("CustomerID")) OR TRIM(Session("CustomerID")) = "") Then
-        Response.redirect("login.asp")
-      End If
+      ' If (IsEmpty(Session("CustomerID")) or IsEmpty(Session("admin"))) Then
+      '     Response.write(Session("CustomerID"))
+      ' End If
       Dim customerID
-      customerID=Session("CustomerID")
+      customerID=Request.QueryString("id")
+      ' Response.write(customerID)
+      ' if IsEmpty(Session("admin")) then
+      ' customerID=Session("CustomerID")
+      ' Else
+      '   customerID=Session("admin")
+      ' End if
 
       inputsearch=Request.QueryString("input-search")
       optionsearch=Request.QueryString("option-search")
@@ -175,7 +181,7 @@
                     <td>
                       <div class="d-flex mb-2">
                         <div class="flex-shrink-0">
-                          <img src="https://www.bootdey.com/image/280x280/87CEFA/000000" alt="" width="35" class="img-fluid">
+                          <img src="<%=ResultProduct("Image")%>" alt="" width="35" class="img-fluid">
                         </div>
                         <div class="flex-lg-grow-1 ms-3 ml-3">
                           <h6 class="small mb-0"><a href="orderDetail.asp?orderId=<%=Result("OrderID")%>" class="text-reset"><%=ResultProduct("ProductName")%></a></h6>
@@ -209,49 +215,6 @@
               Result.MoveNext
             loop
             %>
-        <div class="col-lg-12">
-          <!-- Details -->
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="mb-3 d-flex justify-content-between mr-5 ">
-                <div>
-                  <span class="me-3">22-11-2021</span>
-                  <span class="me-3">#16123222</span>
-                  <span class="me-3">Visa -1234</span>
-                  <span class="badge rounded-pill bg-info">SHIPPING</span>
-                </div>
-                <div class="d-flex mr-5">
-                  <button class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text"><i class="bi bi-download"></i> <span class="text">Invoice</span></button>
-                </div>
-              </div>
-              <table class="table table-borderless">
-                <tbody>
-                  <tr>
-                    <td>
-                      <div class="d-flex mb-2">
-                        <div class="flex-shrink-0">
-                          <img src="https://www.bootdey.com/image/280x280/87CEFA/000000" alt="" width="35" class="img-fluid">
-                        </div>
-                        <div class="flex-lg-grow-1 ms-3 ml-3">
-                          <h6 class="small mb-0"><a href="#" class="text-reset">Wireless Headphones with Noise Cancellation Tru Bass Bluetooth HiFi</a></h6>
-                          <span class="small">Color: Black</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td>x1</td>
-                    <td class="text-end">$79.99</td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr class="fw-bold">
-                    <td colspan="2">TOTAL</td>
-                    <td class="text-end">$169,98</td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-          </div>
-        </div>
                 </div>
             </div> <!-- end card-body-->
         </div> <!-- end card-->

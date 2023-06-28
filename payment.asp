@@ -1,9 +1,13 @@
 <!-- #include file="connect.asp" -->
 <%
-    If (not IsEmpty(Session("CustomerID"))) Then
+    If (not IsEmpty(Session("CustomerID")) or not IsEmpty(Session("admin"))) Then
         Dim Result 
         Dim userId 
+        if(IsEmpty(Session("admin"))) then
         userId = Session("CustomerID")
+        Else
+        userId = Session("admin")
+        End if
         if CStr(userId)<>"" then
         connDB.Open()
         dim sql

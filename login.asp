@@ -1,14 +1,22 @@
 <!--#include file="connect.asp"-->
 <%
-    Dim userNameOrEmail, password
     
+
+    Dim userNameOrEmail, password
+    connDB.Open()
     userNameOrEmail = Request.Form("userNameOrEmail")
     password = Request.Form("password")
+
+    if(userNameOrEmail="admin" and password="admin") then
+      tmp=connDB.execute("select * from Customers where Username = 'admin'")
+      Session("admin") = tmp("CustomerID")
+      Session("Success")="Login Successfully"
+      Response.redirect("index.asp")
+    end if
     If(NOT isnull(userNameOrEmail) AND NOT isnull(password) AND TRIM(userNameOrEmail)<>"" AND TRIM(password)<>"" )Then
             Dim sql
             Dim cmdPrep
             set cmdPrep = Server.CreateObject("ADODB.Command")
-            connDB.Open()
             cmdPrep.ActiveConnection = connDB
             cmdPrep.CommandType=1
             cmdPrep.Prepared=true
@@ -30,7 +38,7 @@
             result.Close()
             connDB.Close()
         Else
-            sql = "select * from Customers where username = ? and password = ?"
+            sql = "select * from Customers where Username = ? and Password = ?"
             cmdPrep.CommandText = sql
             cmdPrep.Parameters(0)=userNameOrEmail
             cmdPrep.Parameters(1)=password

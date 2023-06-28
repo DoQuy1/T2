@@ -295,7 +295,7 @@
 
                                     <td class="align-middle" >
                                         <a href="editOrder.asp?orderId=<%=Result("OrderID")%>"><i class="fa-regular fa-pen-to-square"></i></a>
-                                        <a data-href="deleteOrder.asp?orderId=<%=Result("OrderID")%>" data-bs-toggle="modal" data-bs-target="#confirm-delete" title="Delete"><i class="fa-regular fa-trash-can" style="cursor: pointer;color:#007bff"></i></a>
+                                        <a data-href="deleteOrder.asp?orderId=<%=Result("OrderID")%>" data-bs-toggle="modal" data-bs-target="#confirm-delete" title="Delete"><i class="fa-regular fa-trash-can" style="cursor: pointer;color:#dc3545"></i></a>
                                     </td>
                                 </tr>
                                 <%
