@@ -211,7 +211,6 @@ button {
 .banner_bg_main {
     width: 100%;
     float: left;
-    background-image: url(../images/banner-bg.png);
     height: auto;
     background-size: 100%;
     background-repeat: no-repeat;
@@ -483,7 +482,7 @@ a:hover {
 .banner_taital {
     width: 100%;
     font-size: 60px;
-    color: #ffffff;
+    color: #efb1b1;
     text-align: center;
     text-transform: uppercase;
     font-weight: bold;

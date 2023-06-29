@@ -148,7 +148,7 @@
                   <span class="badge rounded-pill bg-info"><%=Result("Status")%></span>
                 </div>
                 <div class="d-flex ">
-                  <button class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text"><i class="bi bi-download"></i> <span class="text">Invoice</span></button>
+                  <a href ="orderDetail.asp?orderId=<%=Result("OrderID")%>" class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text"><i class="bi bi-download"></i> <span class="text">Invoice</span></a>
                 </div>
               </div>
               <table class="table table-borderless">
@@ -184,7 +184,7 @@
                           <img src="<%=ResultProduct("Image")%>" alt="" width="35" class="img-fluid">
                         </div>
                         <div class="flex-lg-grow-1 ms-3 ml-3">
-                          <h6 class="small mb-0"><a href="orderDetail.asp?orderId=<%=Result("OrderID")%>" class="text-reset"><%=ResultProduct("ProductName")%></a></h6>
+                          <h6 class="small mb-0"><a href="productDetail.asp?id=<%=ResultProduct("ProductID")%>" class="text-reset"><%=ResultProduct("ProductName")%></a></h6>
                           <span class="small"><%=ResultProduct("Brand")%></span>
                         </div>
                       </div>

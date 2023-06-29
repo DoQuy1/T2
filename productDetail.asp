@@ -31,8 +31,8 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="index.asp">Home</a></li>
-                            <li class="breadcrumb-item active">Product Details</li>
+                            <li class="breadcrumb-item" style="list-style-type: none;"><a href="index.asp">Home</a></li>
+                            <li class="breadcrumb-item active" style="list-style-type: none;">Product Details</li>
                         </ol>
                     </div>
                 </div>
@@ -76,10 +76,10 @@
 	        </div>
 	        <div class="product-info-tabs">
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
-					<li class="nav-item">
+					<li class="nav-item" style="list-style-type: none;">
 						<a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" style="list-style-type: none;">
 						<a class="nav-link" id="specification-tab" data-toggle="tab" href="#specification" role="tab" aria-controls="specification" aria-selected="false">Specification</a>
 					</li>
 				</ul>

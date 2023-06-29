@@ -20,7 +20,7 @@
 
 <!-- #include file="./layout/header.asp" -->
       <!-- banner bg main start -->
-      <div class="banner_bg_main">
+      <div class="banner_bg_main" style="background-image: url(images/pngtree-music-headset-red-simple-banner-image_174717.jpg);">
          <!-- header top section start -->
         
          <!-- header top section start -->
