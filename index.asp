@@ -6,6 +6,8 @@
             Ceil = Ceil + 1
         end if
     end function
+
+    searchParams= Request.QueryString("input-search")
     limit = 3
     connDB.Open()
     strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable'"
@@ -42,13 +44,13 @@
                   <div id="mySidenav" class="sidenav">
                      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                      <a href="index.asp">Home</a>
-                     <a href="productList.asp">Danh sách sản phẩm</a>
+                     <a href="productList.asp">List of products</a>
                      <%
                         if(Not IsEmpty(Session("admin"))) then
                      %>
-                     <a href="userManagement.asp">Quản lý tài khoản người dùng</a>
-                     <a href="productManagement.asp">Quản lý sản phẩm</a>
-                     <a href="orderManagement.asp">Quản lý hóa đơn</a>
+                     <a href="userManagement.asp">User Account Management</a>
+                     <a href="productManagement.asp">Product Management</a>
+                     <a href="orderManagement.asp">Invoice Management</a>
                      <%
                         end if
                      %>
@@ -67,7 +69,7 @@
                            Set ResultCategory = cmdcategory.execute
                            Do While Not ResultCategory.EOF
                         %>
-                           <a class="dropdown-item" href="#<%=ResultCategory("CategoryName")%>_main_slider">Tai Nghe <%=ResultCategory("CategoryName")%></a>
+                           <a class="dropdown-item" href="#<%=ResultCategory("CategoryName")%>_main_slider">Headphone <%=ResultCategory("CategoryName")%></a>
                         <%
                            ResultCategory.MoveNext
                            loop
@@ -76,27 +78,19 @@
                   </div>
                   <div class="main">
                      <!-- Another variation with a button -->
-                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search this blog">
-                        <div class="input-group-append">
-                           <button class="btn btn-secondary" type="button" style="background-color: #f26522; border-color:#f26522 ">
-                           <i class="fa fa-search"></i>
-                           </button>
+                     <form id="searchform" >
+                        <div class="input-group">
+                           <input value="<%=searchParams%>" name="input-search" type="text" class="form-control" placeholder="Search this blog">
+                           <div class="input-group-append">
+                              <button class="btn btn-secondary" type="submit" style="background-color: #f26522; border-color:#f26522 ">
+                              <i class="fa fa-search"></i>
+                              </button>
+                           </div>
                         </div>
-                     </div>
+                     </form>
                   </div>
                   <div class="header_box">
-                     <div class="lang_box ">
-                        <a href="#" title="Language" class="nav-link" data-toggle="dropdown" aria-expanded="true">
-                        <img src="images/flag-uk.png" alt="flag" class="mr-2 " title="United Kingdom"> English <i class="fa fa-angle-down ml-2" aria-hidden="true"></i>
-                        </a>
-                        <div class="dropdown-menu ">
-                           <a href="#" class="dropdown-item">
-                           <img src="images/flag-france.png" class="mr-2" alt="flag">
-                           French
-                           </a>
-                        </div>
-                     </div>
+                     
                      <div class="login_menu">
                         <ul>
                            <li><a href="shoppingCart.asp">
@@ -182,6 +176,7 @@
       <!-- banner bg main end -->
       <!-- Tai nghe section start -->
       <%
+         if trim(searchParams)="" then
          Dim slide_start, i, SQL, Result,j
       %>
       <div class="product_section">
@@ -204,7 +199,7 @@
                   %>
                      <div class="carousel-item <% If i=0 then Response.write("active")%>">
                         <div class="container">
-                           <h1 class="fashion_taital">Tai nghe</h1>
+                           <h1 class="fashion_taital">Headphone</h1>
                            <div class="product_section_">
                               <div class="row">
                                     <% 
@@ -279,7 +274,7 @@
             %>
                <div class="carousel-item <% If i=0 then Response.write("active")%>">
                   <div class="container">
-                     <h1 class="fashion_taital">Tai Nghe <%=CategoryName%></h1>
+                     <h1 class="fashion_taital">Headphone <%=CategoryName%></h1>
                      <div class="product_section_2">
                         <div class="row">
                            <% 
@@ -325,7 +320,93 @@
       <%
          CategoryResult.MoveNext
        Loop
+       Else
       %>
+      <div class="product_section">
+         <div id="main_slider" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                  <%
+                     strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable' and ProductName Like '%"&searchParams&"%'"
+                     Set CountResult = connDB.execute(strSQL)
+
+                     totalRows = CLng(CountResult("count"))
+
+                     Set CountResult = Nothing
+                  ' lay ve tong so trang
+                     pages = Ceil(totalRows/limit)
+                     if pages<>0 then
+                  slide_start = 1
+                  SQL ="Select * from Products where Status = 'Enable' and ProductName Like '%"&searchParams&"%'"
+                  Set Result = connDB.execute(SQL)
+                  For i= 0 To pages - 1
+                  %>
+                     <div class="carousel-item <% If i=0 then Response.write("active")%>">
+                        <div class="container">
+                           <h1 class="fashion_taital">Headphone</h1>
+                           <div class="product_section_">
+                              <div class="row">
+                                    <% 
+                                    For j = slide_start To slide_start + limit - 1
+                                       if j > totalRows then exit for
+                                       %>
+                                       <div class="col-lg-4 col-sm-4">
+                                          <div class="box_main">
+                                             <h4 class="shirt_text"><%=Result("ProductName")%></h4>
+                                             <p class="price_text">Price  <span style="color: #262626;"><%=Result("Price")%></span></p>
+                                             <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
+                                             <div class="tshirt_img"><img src="<%=Result("Image")%>"></div>
+                                             <div class="btn_main">
+                                                <div class="buy_bt"><a href="payment.asp?productId=<%=Result("ProductID")%>">Buy Now</a></div>
+                                                <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
+                                                <div class="seemore_bt"><a href="productDetail.asp?id=<%=Result("ProductID")%>">See More</a></div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <%
+                                       Result.MoveNext
+                                    Next
+                                    slide_start = slide_start + limit
+                                    %>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <%
+                     Next
+                     %>
+            </div>
+            <a class="carousel-control-prev" href="#main_slider" role="button" data-slide="prev">
+            <i class="fa fa-angle-left"></i>
+            </a>
+            <a class="carousel-control-next" href="#main_slider" role="button" data-slide="next">
+            <i class="fa fa-angle-right"></i>
+            </a>
+         </div>
+         <%
+         end if
+         set SQL=nothing 
+         set Result=nothing
+         End if
+      %>
+      </div>
+      <div class="modal" tabindex="-1" id="confirmModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>You must be logged in to get paid! 
+                        <br>Click continue to go to the login page, click Close to cancel </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"  id="cancelButton" data-bs-dismiss="modal">Close</button>
+                        <a href="login.asp"class="btn btn-danger" id="continueButton">Countinue</a>
+                    </div>
+                </div>
+            </div>
+        </div>
       <!-- #include file="./layout/footer.asp" -->
       <!-- copyright section end -->
       <!-- Javascript files-->
@@ -351,6 +432,20 @@
             $(this).remove(); 
          });
       }, 2000);
+
+      $(document).ready(function () {
+         $("#searchform").on("submit", function(event) {
+         var search = $('input[name="input-search"]').val();
+         console.log(search);
+               if (search === "") {
+               event.preventDefault(); // Ngăn chặn việc gửi biểu mẫu nếu input không có giá trị
+               var url = new URL(window.location.href);
+               url.searchParams.delete("input-search");
+               window.location.href = url.toString();
+            }
+         });
+       });
+
 
       </script>
    </body>

@@ -13,13 +13,11 @@
       '     Response.write(Session("CustomerID"))
       ' End If
       Dim customerID
-      customerID=Request.QueryString("id")
+      customerID=Session("CustomerID")
       ' Response.write(customerID)
-      ' if IsEmpty(Session("admin")) then
-      ' customerID=Session("CustomerID")
-      ' Else
-      '   customerID=Session("admin")
-      ' End if
+      if not IsEmpty(Session("admin")) then
+      customerID=Session("admin")
+      End if
 
       inputsearch=Request.QueryString("input-search")
       optionsearch=Request.QueryString("option-search")

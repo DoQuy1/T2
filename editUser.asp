@@ -23,7 +23,7 @@
             Set cmdPrepUser = Nothing
     End if    
 
-    If(NOT isnull(username) AND NOT isnull(name) AND NOT isnull(password) AND NOT isnull(passRepeat) AND NOT isnull(address) AND NOT isnull(phone) AND  NOT isnull(email) AND  TRIM(username)<>"" AND  TRIM(name)<>"" AND TRIM(password)<>"" AND  TRIM(passRepeat)<>"" AND TRIM(address)<>"" AND  TRIM(phone)<>"" AND TRIM(email)<>"")Then
+    If(NOT isnull(username) AND NOT isnull(name) AND NOT isnull(password) AND NOT isnull(address) AND NOT isnull(phone) AND  NOT isnull(email) AND  TRIM(username)<>"" AND  TRIM(name)<>"" AND TRIM(password)<>"" AND TRIM(address)<>"" AND  TRIM(phone)<>"" AND TRIM(email)<>"")Then
         Dim sql
         sql = "select COUNT(*) as count from Customers where email =? or username =?"
         Dim cmdPrep
@@ -56,7 +56,9 @@
         Session("Error")= "Email or username already exists. Please choose another login email or username."
         END if
     Else
+        If (Request.ServerVariables("REQUEST_METHOD") = "POST") THEN
         Session("Error")="Something is empty. Please fill in all the information in the input boxes."
+        End if
     End if
 %>
 
@@ -158,6 +160,13 @@
                 <a href="userManagement.asp" class="btn btn-info">Cancel</a>           
             </form>
         </div>
+        <script>
+        window.setTimeout(function() {
+    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove(); 
+    });
+}, 2000);
+        </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>      
 </body>

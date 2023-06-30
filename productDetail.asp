@@ -40,7 +40,7 @@
         </section>
 </div>
 
-	<div class="pd-wrap">
+	<div class="pd-wrap" style="background-color:#ededed">
 		<div class="container">
 	        <div class="heading-section">
 	            <h2>Product Details</h2>

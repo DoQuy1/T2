@@ -79,7 +79,7 @@
                   <form method="post" action="login.asp">
                     <p>Please login to your account</p>
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="form2Example11" >Email</label>
+                      <label class="form-label" for="form2Example11" >Email or Username</label>
                       <input type="text" id="form2Example11" class="form-control"
                         placeholder="Email or UserName" name="userNameOrEmail">
                     </div>
@@ -107,10 +107,8 @@
               </div>
               <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
                 <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                  <h4 class="mb-4">We are more than just a company</h4>
-                  <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                  <h4 class="mb-4">Đồ án công nghệ web nâng cao</h4>
+                  <p class="small mb-0">Tiềm năng kinh doanh: Lĩnh vực tai nghe đang phát triển mạnh mẽ và có tiềm năng kinh doanh lớn. Xây dựng một trang web về tai nghe không chỉ giúp người dùng, mà còn mở ra cơ hội kinh doanh thông qua việc bán sản phẩm tai nghe hoặc hợp tác quảng cáo với các nhà sản xuất tai nghe.</p>
                 </div>
               </div>
             </div>
@@ -119,4 +117,5 @@
       </div>
     </div>
   </section>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <!-- #include file="./layout/footer.asp" -->

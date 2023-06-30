@@ -46,7 +46,7 @@
 
 ' trang hien tai
     page = Request.QueryString("page")
-    limit=1
+    limit=6
     inputsearch=Request.QueryString("input-search")
     Response.Write("<br>")
     Response.Write(inputsearch)

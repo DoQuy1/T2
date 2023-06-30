@@ -101,12 +101,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Order Management</h1>
+                        <h1>Invoice Management</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="index.asp">Home</a></li>
-                            <li class="breadcrumb-item active">Order Management</li>
+                            <li class="breadcrumb-item active">Invoice Management</li>
                         </ol>
                     </div>
                 </div>
@@ -259,10 +259,22 @@
                                             Set ResultUser = cmdUser.execute
                                         %>
                                     <td class="align-middle">
-                                        <%=ResultUser("Name")%>
+                                        <%
+                                            if(ResultUser.EOF = true) then 
+                                            Response.write("Null")
+                                            Else
+                                            Response.write(ResultUser("Name"))
+                                            End if
+                                        %>
                                     </td>
                                     <td class="align-middle">
-                                        <%=ResultUser("Username")%>
+                                        <%
+                                            if(ResultUser.EOF = true) then 
+                                            Response.write("Null")
+                                            Else
+                                            Response.write(ResultUser("Username"))
+                                            End if
+                                        %>
                                     </td>
                                     <td class="align-middle">
                                         <%

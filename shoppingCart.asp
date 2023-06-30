@@ -78,7 +78,7 @@ If (NOT IsEmpty(Session("mycarts"))) Then
 
 <div class="container">
   <%
-    If (isnull(Session("CustomerID")) and isnull(Session("admin"))) Then
+    If (not isnull(Session("CustomerID")) and not isnull(Session("admin"))) Then
           Response.Write("<input hidden id='checkCustomer' name='checkCustomer' value='checkuser'")
     Else
       Response.Write("<input hidden id='checkCustomer' name='checkCustomer' ")
@@ -106,7 +106,7 @@ If (NOT IsEmpty(Session("mycarts"))) Then
         <div class="col-md-9">
             <div class="ibox">
                 <div class="ibox-title">
-                    <span class="pull-right"><%= totalProduct %> <%call defineItems(totalProduct) %></span>
+                    <span class="float-end"><%= totalProduct %> <%call defineItems(totalProduct) %></span>
                     <h5>Items in your cart</h5>
                     <h5 class="<%= statusButtons %>"><input name="select-all" id="select-all" type="checkbox" style="margin: 0 15px;" >Select All</h5>
                   <h5 class="mt-3 text-center text-body-secondary <%= statusViews %>">You have no products added in your shopping cart.</h5>
@@ -276,7 +276,7 @@ crossorigin="anonymous">
     $(document).ready(function() {
        $("#checkout").click(function(event) {
             var idcustomer = $("#checkCustomer").val();
-            if(idcustomer){
+            if(idcustomer==""){
               event.preventDefault()
               $("#confirmModal").modal('show');
             }
@@ -299,7 +299,7 @@ crossorigin="anonymous">
     $(document).ready(function() {
        $("#myButton").click(function(event) {
           var idcustomer = $("#checkCustomer").val();
-            if(idcustomer){
+            if(idcustomer==""){
               event.preventDefault()
               $("#confirmModal").modal('show');
             }

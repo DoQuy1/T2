@@ -25,7 +25,7 @@
         If result("count") > 0 Then 
             Session("Error")= "Email or username already exists. Please choose another login email or username."
         Else 
-            cmdPrep.CommandText = "INSERT INTO Customers (Name,Address,Phone,Email,Username,Password) VALUES(?,?,?,?,?,?)"
+            cmdPrep.CommandText = "INSERT INTO Customers (Name,Address,Phone,Email,Username,Password,Status) VALUES(?,?,?,?,?,?,'Enable')"
             cmdPrep.parameters.Append cmdPrep.createParameter("name",202,1,255,name)
             cmdPrep.parameters.Append cmdPrep.createParameter("address",202,1,255,address)
             cmdPrep.parameters.Append cmdPrep.createParameter("phone",202,1,255,phone)
