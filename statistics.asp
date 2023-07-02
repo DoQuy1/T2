@@ -97,19 +97,20 @@
                                     cmdPrep.Prepared = True
                                     if(trim(fromDate) <> "") and (NOT IsEmpty(fromDate)) and trim(toDate) <> "" and (NOT IsEmpty(toDate)) and (trim(inputsearch) <> "") and (NOT IsEmpty(inputsearch)) then
                                         cmdPrep.CommandText = "SELECT p.ProductID, p.ProductName, SUM(od.Quantity) AS TotalQuantity, SUM(o.TotalAmount) AS TotalValue " & _
-                                    "FROM Products p " & _
-                                    "INNER JOIN OrderDetail od ON p.ProductID = od.ProductID " & _
-                                    "INNER JOIN Orders o ON od.OrderID = o.OrderID " & _
-                                    "Where OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' and p.ProductName Like '%"&inputsearch&"%' " & _
-                                    "GROUP BY p.ProductID, p.ProductName, o.TotalAmount " & _
-                                    "ORDER BY TotalQuantity DESC"
+                                        "FROM Products p " & _
+                                        "INNER JOIN OrderDetail od ON p.ProductID = od.ProductID " & _
+                                        "INNER JOIN Orders o ON od.OrderID = o.OrderID " & _
+                                        "WHERE o.OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"'"& _
+                                        "AND p.ProductName Like '%"&inputsearch&"%' " & _
+                                        "GROUP BY p.ProductID, p.ProductName " & _
+                                        "ORDER BY TotalQuantity DESC"
                                     Elseif(trim(inputsearch) <>"") and (Not IsEmpty(inputsearch)) then
                                         cmdPrep.CommandText = "SELECT p.ProductID, p.ProductName, SUM(od.Quantity) AS TotalQuantity, SUM(o.TotalAmount) AS TotalValue " & _
                                         "FROM Products p " & _
                                         "INNER JOIN OrderDetail od ON p.ProductID = od.ProductID " & _
                                         "INNER JOIN Orders o ON od.OrderID = o.OrderID " & _
                                         "Where p.ProductName Like '%"&inputsearch&"%' " & _
-                                        "GROUP BY p.ProductID, p.ProductName, o.TotalAmount " & _
+                                        "GROUP BY p.ProductID, p.ProductName " & _
                                         "ORDER BY TotalQuantity DESC"
                                     Elseif(trim(fromDate) <>"") and (Not IsEmpty(fromDate)) and trim(toDate) <>"" and (Not IsEmpty(toDate)) then
                                         cmdPrep.CommandText = "SELECT p.ProductID, p.ProductName, SUM(od.Quantity) AS TotalQuantity, SUM(o.TotalAmount) AS TotalValue " & _
@@ -117,14 +118,14 @@
                                         "INNER JOIN OrderDetail od ON p.ProductID = od.ProductID " & _
                                         "INNER JOIN Orders o ON od.OrderID = o.OrderID " & _
                                         "Where OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"'"& _
-                                        "GROUP BY p.ProductID, p.ProductName, o.TotalAmount " & _
+                                        "GROUP BY p.ProductID, p.ProductName " & _
                                         "ORDER BY TotalQuantity DESC"
                                     Else
                                         cmdPrep.CommandText = "SELECT p.ProductID, p.ProductName, SUM(od.Quantity) AS TotalQuantity, SUM(o.TotalAmount) AS TotalValue " & _
                                         "FROM Products p " & _
                                         "INNER JOIN OrderDetail od ON p.ProductID = od.ProductID " & _
                                         "INNER JOIN Orders o ON od.OrderID = o.OrderID " & _
-                                        "GROUP BY p.ProductID, p.ProductName, o.TotalAmount " & _
+                                        "GROUP BY p.ProductID, p.ProductName " & _
                                         "ORDER BY TotalQuantity DESC"
                                     End if
                                     Set Result = cmdPrep.execute
