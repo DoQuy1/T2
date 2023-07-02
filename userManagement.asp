@@ -47,15 +47,15 @@
       Case 0
       strSQL = "SELECT COUNT(CustomerID) AS count FROM Customers "
       Case 1 
-      strSQL = "SELECT COUNT(CustomerID) AS count FROM Customers Where Name Like '%"&inputsearch&"%' "
+      strSQL = "SELECT COUNT(CustomerID) AS count FROM Customers Where Name Like N'%"&inputsearch&"%' "
       Case 2
-      strSQL = "SELECT COUNT(CustomerID) AS count FROM Customers Where Address Like '%"&inputsearch&"%' "
+      strSQL = "SELECT COUNT(CustomerID) AS count FROM Customers Where Address Like N'%"&inputsearch&"%' "
       Case 3
-      strSQL = "SELECT COUNT(CustomerID) AS count FROM Customers Phone Like '%"&inputsearch&"%' "
+      strSQL = "SELECT COUNT(CustomerID) AS count FROM Customers  Where Phone Like '%"&inputsearch&"%' "
       Case 4
-      strSQL = "SELECT COUNT(CustomerID) AS count FROM Customers Email Like '%"&inputsearch&"%' "
+      strSQL = "SELECT COUNT(CustomerID) AS count FROM Customers  Where Email Like '%"&inputsearch&"%' "
       Case 5
-      strSQL = "SELECT COUNT(CustomerID) AS count FROM Customers Username Like '%"&inputsearch&"%' "
+      strSQL = "SELECT COUNT(CustomerID) AS count FROM Customers  Where Username Like '%"&inputsearch&"%' "
     End Select
         currentUrl = "userManagement.asp?input-search="&inputsearch&"&option-search="&optionsearch&"&"
     Else
@@ -166,11 +166,11 @@
                                       Case 0
                                       cmdPrep.CommandText = "SELECT * FROM Customers ORDER BY CustomerID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 1 
-                                      cmdPrep.CommandText = "SELECT * FROM Customers Where Name Like '%"&inputsearch&"%' ORDER BY CustomerID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Customers Where Name Like N'%"&inputsearch&"%' ORDER BY CustomerID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 2
-                                      cmdPrep.CommandText = "SELECT * FROM Customers Where Address Like '%"&inputsearch&"%' ORDER BY CustomerID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Customers Where Address Like N'%"&inputsearch&"%' ORDER BY CustomerID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 3
-                                      cmdPrep.CommandText = "SELECT * FROM Customers Where Phone Like '%"&inputsearch&"%' ORDER BY CustomerID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Customers Where Phone Like N'%"&inputsearch&"%' ORDER BY CustomerID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 4
                                       cmdPrep.CommandText = "SELECT * FROM Customers Where  Email Like '%"&inputsearch&"%' ORDER BY CustomerID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 5

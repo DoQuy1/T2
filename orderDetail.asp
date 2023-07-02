@@ -43,13 +43,13 @@
   set OrderCurrShippingAddress = OrderCurr("ShippingAddress")
 
 
-  Response.write(OrderCurrID)
-  Response.write("<br>")
+  ' Response.write(OrderCurrID)
+  ' Response.write("<br>")
 
 
   set PaymentMethodName=PaymentCurr("PaymentMethodName")
-  Response.write(PaymentMethodName)
-  Response.write("<br>")
+  ' Response.write(PaymentMethodName)
+  ' Response.write("<br>")
 
   Set cmdOrderUserID = Server.CreateObject("ADODB.Command")
    cmdOrderUserID.ActiveConnection = connDB

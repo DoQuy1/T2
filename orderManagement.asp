@@ -64,9 +64,9 @@
       Case 3
       strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where PaymentMethodID = (Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') "
       Case 4
-      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where Status '%"&inputsearch&"%' "
+      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where Status like'%"&inputsearch&"%' "
       Case 5
-      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where ShippAddress '%"&inputsearch&"%' "
+      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where ShippAddress like '%"&inputsearch&"%' "
       Case 6
       strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where Price <= "&inputsearch&" "
         End Select
@@ -210,9 +210,9 @@
                                       Case 3
                                       cmdPrep.CommandText = "SELECT * FROM Orders Where PaymentMethodID=(Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 4
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where Status '%"&inputsearch&"%' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where Status like '%"&inputsearch&"%' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 5
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where ShippAddress '%"&inputsearch&"%' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where ShippAddress like '%"&inputsearch&"%' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 6
                                       cmdPrep.CommandText = "SELECT * FROM Orders Where Price <= "&inputsearch&" ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                     End Select

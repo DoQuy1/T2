@@ -8,9 +8,33 @@
     end function
 
     searchParams= Request.QueryString("input-search")
-    limit = 3
+   
     connDB.Open()
-    
+    strSQL = "SELECT COUNT(*) AS count " & _
+         "FROM (" & _
+         "    SELECT p.ProductID, p.ProductName, p.Price, p.Image " & _
+         "    FROM Products p " & _
+         "    INNER JOIN OrderDetail od ON p.ProductID = od.ProductID " & _
+         "    GROUP BY p.ProductID, p.ProductName, p.Price, p.Image " & _
+         "    HAVING SUM(od.Quantity) > 1 " & _
+         ") AS SubQuery"
+        Set CountResult = connDB.execute(strSQL)
+        totalRows = CLng(CountResult("count"))
+
+        limit = 3
+        
+
+        Set CountResult = Nothing
+    ' lay ve tong so trang
+        pages = Ceil(totalRows/limit)
+        if pages<>0 then
+    slide_start = 1
+    SQL ="SELECT p.ProductID, p.ProductName, p.Price, p.Image, SUM(od.Quantity) AS TotalQuantity, SUM(od.Quantity * od.Price) AS TotalValue " & _
+        "FROM Products p " & _
+        "INNER JOIN OrderDetail od ON p.ProductID = od.ProductID " & _
+        "GROUP BY p.ProductID, p.ProductName, p.Price, p.Image " & _
+        "HAVING SUM(od.Quantity) > 1"
+    Set Result = connDB.execute(SQL)
 %>
 
 <!-- #include file="./layout/header.asp" -->
@@ -24,7 +48,7 @@
                   <div class="col-sm-12">
                      <div class="custom_menu">
                         <ul>
-                           <li><a href="BestSellers.asp">Best Sellers</a></li>
+                           <li><a href="#">Best Sellers</a></li>
                         </ul>
                      </div>
                   </div>
@@ -57,7 +81,6 @@
                      <a href="userManagement.asp">User Account Management</a>
                      <a href="productManagement.asp">Product Management</a>
                      <a href="orderManagement.asp">Invoice Management</a>
-                     <a href="statistics.asp">Statistics Management</a>
                      <%
                         end if
                      %>
@@ -85,7 +108,7 @@
                   </div>
                   <div class="main">
                      <!-- Another variation with a button -->
-                     <form id="searchform" action="index.asp" >
+                     <form id="searchform" action="index.asp">
                         <div class="input-group">
                            <input value="<%=searchParams%>" name="input-search" type="text" class="form-control" placeholder="Search this blog">
                            <div class="input-group-append">
@@ -190,23 +213,11 @@
          <div id="main_slider" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                   <%
-                     strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable'"
-                     Set CountResult = connDB.execute(strSQL)
-
-                     totalRows = CLng(CountResult("count"))
-
-                     Set CountResult = Nothing
-                  ' lay ve tong so trang
-                     pages = Ceil(totalRows/limit)
-                     if pages<>0 then
-                  slide_start = 1
-                  SQL ="Select * from Products where Status = 'Enable'"
-                  Set Result = connDB.execute(SQL)
                   For i= 0 To pages - 1
                   %>
                      <div class="carousel-item <% If i=0 then Response.write("active")%>">
                         <div class="container">
-                           <h1 class="fashion_taital">Headphone</h1>
+                           <h1 class="fashion_taital">Best Sellers</h1>
                            <div class="product_section_">
                               <div class="row">
                                     <% 
@@ -250,151 +261,10 @@
          end if
          set SQL=nothing 
          set Result=nothing
-      %>
-      </div>
-      <!-- Tai nghe section end -->
-      <!-- Tai nghe in ear section start -->
-      <%
-         strSQLCate = "SELECT * FROM Category"
-         Set CategoryResult = connDB.execute(strSQLCate)
-         do while not CategoryResult.EOF
-            ' body
-      %>
-      <div class="product_section">
-         <div id="<%=CategoryResult("CategoryName")%>_main_slider" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-            <%
-                  CategoryName = CategoryResult("CategoryName")
-                   strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable' and CategoryID=(Select CategoryID from Category where CategoryName='"&CategoryName&"')"
-                  Set CountResult = connDB.execute(strSQL)
-
-                  totalRows = CLng(CountResult("count"))
-
-                  Set CountResult = Nothing
-               ' lay ve tong so trang
-                  pages = Ceil(totalRows/limit)
-                  if pages<>0 then
-               slide_start = 1
-               SQL ="Select * from Products where Status = 'Enable'and CategoryID=(Select CategoryID from Category where CategoryName='"&CategoryName&"')"
-               Set Result = connDB.execute(SQL)
-               For i= 0 To pages - 1
-            %>
-               <div class="carousel-item <% If i=0 then Response.write("active")%>">
-                  <div class="container">
-                     <h1 class="fashion_taital">Headphone <%=CategoryName%></h1>
-                     <div class="product_section_2">
-                        <div class="row">
-                           <% 
-                              For j = slide_start To slide_start + limit - 1
-                                 if j > totalRows then exit for
-                                 %>
-                                 <div class="col-lg-4 col-sm-4">
-                                    <div class="box_main">
-                                       <h4 class="shirt_text"><%=Result("ProductName")%></h4>
-                                       <p class="price_text">Price  <span style="color: #262626;"><%=Result("Price")%></span></p>
-                                       <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
-                                       <div class="tshirt_img"><img src="<%=Result("Image")%>"></div>
-                                       <div class="btn_main">
-                                          <div class="buy_bt"><a href="payment.asp?productId=<%=Result("ProductID")%>">Buy Now</a></div>
-                                          <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
-                                          <div class="seemore_bt"><a href="productDetail.asp?id=<%=Result("ProductID")%>">See More</a></div>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <%
-                                 Result.MoveNext
-                              Next
-                              slide_start = slide_start + limit
-                              %>
-                           </div>
-                           </div>
-                        </div>
-                     </div>
-                     <%
-                     Next
-                     %>
-            </div>
-            <a class="carousel-control-prev" href="#<%=CategoryName%>_main_slider" role="button" data-slide="prev">
-            <i class="fa fa-angle-left"></i>
-            </a>
-            <a class="carousel-control-next" href="#<%=CategoryName%>_main_slider" role="button" data-slide="next">
-            <i class="fa fa-angle-right"></i>
-            </a>
-         </div>
-         <%end if%>
-      </div>
-      <!-- Tai nghe in ear section end -->
-      <%
-         CategoryResult.MoveNext
-       Loop
-       Else
-      %>
-      <div class="product_section">
-         <div id="main_slider" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                  <%
-                     strSQL = "SELECT COUNT(ProductID) AS count FROM Products where Status ='Enable' and ProductName Like '%"&searchParams&"%'"
-                     Set CountResult = connDB.execute(strSQL)
-
-                     totalRows = CLng(CountResult("count"))
-
-                     Set CountResult = Nothing
-                  ' lay ve tong so trang
-                     pages = Ceil(totalRows/limit)
-                     if pages<>0 then
-                  slide_start = 1
-                  SQL ="Select * from Products where Status = 'Enable' and ProductName Like '%"&searchParams&"%'"
-                  Set Result = connDB.execute(SQL)
-                  For i= 0 To pages - 1
-                  %>
-                     <div class="carousel-item <% If i=0 then Response.write("active")%>">
-                        <div class="container">
-                           <h1 class="fashion_taital">Headphone</h1>
-                           <div class="product_section_">
-                              <div class="row">
-                                    <% 
-                                    For j = slide_start To slide_start + limit - 1
-                                       if j > totalRows then exit for
-                                       %>
-                                       <div class="col-lg-4 col-sm-4">
-                                          <div class="box_main">
-                                             <h4 class="shirt_text"><%=Result("ProductName")%></h4>
-                                             <p class="price_text">Price  <span style="color: #262626;"><%=Result("Price")%></span></p>
-                                             <p class="price_text"><span class="text-danger" style="color: #262626;"><s>$ 45</s></span></p>
-                                             <div class="tshirt_img"><img src="<%=Result("Image")%>"></div>
-                                             <div class="btn_main">
-                                                <div class="buy_bt"><a href="payment.asp?productId=<%=Result("ProductID")%>">Buy Now</a></div>
-                                                <div class="buy_bt"><a href="addCart.asp?idproduct=<%=Result("ProductID")%>">Add To Cart</a></div>
-                                                <div class="seemore_bt"><a href="productDetail.asp?id=<%=Result("ProductID")%>">See More</a></div>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <%
-                                       Result.MoveNext
-                                    Next
-                                    slide_start = slide_start + limit
-                                    %>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <%
-                     Next
-                     %>
-            </div>
-            <a class="carousel-control-prev" href="#main_slider" role="button" data-slide="prev">
-            <i class="fa fa-angle-left"></i>
-            </a>
-            <a class="carousel-control-next" href="#main_slider" role="button" data-slide="next">
-            <i class="fa fa-angle-right"></i>
-            </a>
-         </div>
-         <%
          end if
-         set SQL=nothing 
-         set Result=nothing
-         End if
       %>
+      </div>
+
       </div>
       <div class="modal" tabindex="-1" id="confirmModal">
             <div class="modal-dialog">
