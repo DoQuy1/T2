@@ -158,7 +158,7 @@
 
                                     Select Case optionsearch
                                       Case 0
-                                      cmdPrep.CommandText = "SELECT * FROM Products ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Products ORDER BY ProductID  OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 1 
                                       cmdPrep.CommandText = "SELECT * FROM Products Where ProductName Like '%"&inputsearch&"%' ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 2

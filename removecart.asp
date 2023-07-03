@@ -26,37 +26,33 @@
                     Session("Error") = "The Product haven't been removed from your cart."
                 End If    
             ElseIf (Request.ServerVariables("REQUEST_METHOD") = "POST") Then
-            'Do something... 
-              'Button update de cap nhat lai so luong va gia
-            'check when button update submit
-            'tinh toan so tien
-            'lay ve quantity
                     Dim product_select
                     product_select = Request.Form("cb-selector")
                     if Request.Form("checkout")<>"" or Request.Form("sub_checkout")<>"" then
                         if(product_select<>"") then
-                        product_selectArr=Split(product_select,",")
-                        Set payment = Server.CreateObject("Scripting.Dictionary")
-                        for Each temp in product_selectArr
-                            for Each tmp In mycarts.Keys
-                                if Clng(tmp)= Clng(temp) then
-                                    Response.write(temp)
-                                    Response.write("<br>")
-                                    Dim q 
-                                    q=mycarts.Item(tmp)
-                                    Response.write(q)
-                                    Response.write("<br>")
-                                    payment.Add temp,q
-                                end if
-                            Next
-                        NEXT
-                        set Session("payment")=payment
-                        set payment=Nothing
-                        Response.Redirect("payment.asp")   
+                            product_selectArr=Split(product_select,",")
+                            Set payment = Server.CreateObject("Scripting.Dictionary")
+                            for Each temp in product_selectArr
+                                for Each tmp In mycarts.Keys
+                                    if Clng(tmp)= Clng(temp) then
+                                        ' Response.write(temp)
+                                        ' Response.write("<br>")
+                                        Dim q 
+                                        q=mycarts.Item(tmp)
+                                        ' Response.write(q)
+                                        ' Response.write("<br>")
+                                        payment.Add temp,q
+                                    end if
+                                Next
+                            NEXT
+                            set Session("payment")=payment
+                            set payment=Nothing
+                            Response.Redirect("payment.asp")   
                         Else
                             Session("Error") = "You haven't chosen which product to buy"
                         end if
-                    ElseIf Request.Form("update") <> "" or Request.Form("quantity")<>"" then
+                    end if
+
                         Dim quantityArray
                         quantityArray = Request.Form("quantity")
                         quantityArrays = Split(quantityArray,",")
@@ -64,11 +60,15 @@
                         count = 0  
                         For Each tmp In mycarts.Keys
                         mycarts.Item(tmp) = Clng(quantityArrays(count))
+                        ' Response.write(tmp)
+                        ' Response.write("<br>")
+                        ' Response.write(mycarts.Item(tmp))
+                        ' Response.write("<br>")
                         count = count + 1
                         Next
                     'saving new session value
                         Set Session("mycarts") = mycarts     
-                    end if
+                        
             End If
         End If
         Response.Redirect("shoppingCart.asp")              

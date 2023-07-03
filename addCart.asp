@@ -29,13 +29,12 @@
                         'Response.Write("Key exists.")
                         Dim value
                         if(quantities<>"") then
-                        value=Clng(currentCarts.Item(idProduct))+quantities
+                        value=Clng(currentCarts.Item(idProduct)) + quantities
                         Else
                         value = Clng(currentCarts.Item(idProduct))+1
                         End if
                         currentCarts.Item(idProduct) = value                        
                     else
-                       ' Response.Write("Key does not exist.")
                        if(quantities<>"") then
                         value=Clng(quantities)
                         currentCarts.Add idProduct, value

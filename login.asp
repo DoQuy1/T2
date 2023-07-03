@@ -13,6 +13,7 @@
       Session("Success")="Login Successfully"
       Response.redirect("index.asp")
     end if
+    if (Request.ServerVariables("REQUEST_METHOD") = "POST") then
     If(NOT isnull(userNameOrEmail) AND NOT isnull(password) AND TRIM(userNameOrEmail)<>"" AND TRIM(password)<>"" )Then
             Dim sql
             Dim cmdPrep
@@ -53,6 +54,9 @@
             result.Close()
             connDB.Close()
         End If
+    Else
+        Session("Error")= "Please fill out the form with all the information"   
+    End if
     End if
 
 %>
@@ -69,14 +73,14 @@
             <div class="row g-0">
               <div class="col-lg-6">
                 <div class="card-body p-md-5 mx-md-4">
-  
+                
                   <div class="text-center">
                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
                       style="width: 185px;" alt="logo">
                     <h4 class="mt-1 mb-5 pb-1">We are The Lotus Team</h4>
                   </div>
   
-                  <form method="post" action="login.asp">
+                  <form method="post" action="">
                     <p>Please login to your account</p>
                     <div class="form-outline mb-4">
                       <label class="form-label" for="form2Example11" >Email or Username</label>

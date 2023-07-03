@@ -220,41 +220,41 @@
                                     if(trim(inputsearch) <> "") and (NOT IsEmpty(inputsearch)) and trim(optionsearch) <> "" and (NOT IsEmpty(optionsearch)) and (trim(fromDate) <> "") and (NOT IsEmpty(fromDate)) and trim(toDate) <> "" and (NOT IsEmpty(toDate)) then
                                     Select Case optionsearch
                                       Case 0
-                                      cmdPrep.CommandText = "SELECT * FROM Orders where OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID  OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders where OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 1 
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like N'%"&inputsearch&"%') and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like N'%"&inputsearch&"%') and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 2
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Username Like '%"&inputsearch&"%') and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Username Like '%"&inputsearch&"%') and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 3
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where PaymentMethodID=(Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where PaymentMethodID=(Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 4
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where Status like '%"&inputsearch&"%' and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where Status like '%"&inputsearch&"%' and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 5
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where ShippingAddress like '%"&inputsearch&"%' and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where ShippingAddress like '%"&inputsearch&"%' and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 6
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where TotalAmount <= "&inputsearch&" and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where TotalAmount <= "&inputsearch&" and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                     End Select
                                     Elseif(trim(fromDate) <> "") and (NOT IsEmpty(fromDate)) and trim(toDate) <> "" and (NOT IsEmpty(toDate))then
-                                        cmdPrep.CommandText = "SELECT * FROM Orders Where OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY "
+                                        cmdPrep.CommandText = "SELECT * FROM Orders Where OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY "
                                     Elseif (trim(inputsearch) <> "") and ( Not IsEmpty(inputsearch)) and (trim(optionsearch) <> "") and (Not IsEmpty(optionsearch)) then
                                          Select Case optionsearch
                                             Case 0
-                                            cmdPrep.CommandText = "SELECT * FROM Orders ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                            cmdPrep.CommandText = "SELECT * FROM Orders ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                             Case 1 
-                                            cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like N'%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                            cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like N'%"&inputsearch&"%') ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                             Case 2
-                                            cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Username Like '%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                            cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Username Like '%"&inputsearch&"%') ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                             Case 3
-                                            cmdPrep.CommandText = "SELECT * FROM Orders Where PaymentMethodID=(Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                            cmdPrep.CommandText = "SELECT * FROM Orders Where PaymentMethodID=(Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                             Case 4
-                                            cmdPrep.CommandText = "SELECT * FROM Orders Where Status like '%"&inputsearch&"%' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                            cmdPrep.CommandText = "SELECT * FROM Orders Where Status like '%"&inputsearch&"%' ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                             Case 5
-                                            cmdPrep.CommandText = "SELECT * FROM Orders Where ShippingAddress like '%"&inputsearch&"%' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                            cmdPrep.CommandText = "SELECT * FROM Orders Where ShippingAddress like '%"&inputsearch&"%' ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                             Case 6
-                                            cmdPrep.CommandText = "SELECT * FROM Orders Where TotalAmount <= "&inputsearch&" ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                            cmdPrep.CommandText = "SELECT * FROM Orders Where TotalAmount <= "&inputsearch&" ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                         End Select
                                     Else
-                                        cmdPrep.CommandText = "SELECT * FROM Orders ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                        cmdPrep.CommandText = "SELECT * FROM Orders ORDER BY OrderID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                     end if
                                     
                                     cmdPrep.parameters.Append cmdPrep.createParameter("offset",3,1, ,offset)

@@ -8,6 +8,7 @@
     address = Request.Form("address")
     phone = Request.Form("phone")
     email = Request.Form("email")
+    if(Request.ServerVariables("REQUEST_METHOD") = "POST")then
     If(NOT isnull(username) AND NOT isnull(name) AND NOT isnull(password) AND NOT isnull(passRepeat) AND NOT isnull(address) AND NOT isnull(phone) AND  NOT isnull(email) AND  TRIM(username)<>"" AND  TRIM(name)<>"" AND TRIM(password)<>"" AND  TRIM(passRepeat)<>"" AND TRIM(address)<>"" AND  TRIM(phone)<>"" AND TRIM(email)<>"")Then
         Dim sql
         sql = "select COUNT(*) as count from Customers where email =? or username =?"
@@ -36,6 +37,9 @@
             Session("Success") = "Create account succesful"
             Response.redirect("login.asp")                
         END if
+    Else
+      Session("Error")= "Please fill out the form with all the information"
+    End if
     End if
 %>
 
@@ -51,29 +55,10 @@
             <div class="card-body p-md-5">
               <div class="row justify-content-center">
                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                  <%
-                    If (NOT isnull(Session("Success"))) AND (TRIM(Session("Success"))<>"") Then
-                  %>
-                          <div class="alert alert-success" role="alert">
-                              <%=Session("Success")%>
-                          </div>
-                  <%
-                          Session.Contents.Remove("Success")
-                    End If
-                  %>
-                  <%
-                    If (NOT isnull(Session("Error"))) AND (TRIM(Session("Error"))<>"") Then
-                  %>
-                          <div class="alert alert-danger" role="alert">
-                              <%=Session("Error")%>
-                          </div>
-                  <%
-                          Session.Contents.Remove("Error")
-                    End If
-                  %>
+                  
                   <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
   
-                  <form class="mx-1 mx-md-4" method="Post" action="signup.asp">
+                  <form class="mx-1 mx-md-4" method="POST" action="signup.asp">
   
                     <div class="d-flex flex-row align-items-center mb-4">
                       <i class="fas fa-user fa-lg me-3 fa-fw"></i>

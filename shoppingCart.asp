@@ -17,10 +17,17 @@ If (NOT IsEmpty(Session("mycarts"))) Then
 			idList = List
 		Else
 			idList = idList & "," & List
-		End if                               
+		End if   
+    ' Response.write(List)                            
 	Next
 	Dim sqlString
-	sqlString = "Select * from Products where ProductID IN (" & idList &")"
+	sqlString = "SELECT * FROM Products WHERE ProductID IN (" & idList & ")ORDER BY (CASE ProductID "
+    Dim arrIDs
+    arrIDs = Split(idList, ",")
+    For i = 0 To UBound(arrIDs)
+        sqlString = sqlString & "WHEN " & arrIDs(i) & " THEN " & (i + 1) & " "
+    Next
+    sqlString = sqlString & "END)"
 	connDB.Open()
 	set rs = connDB.execute(sqlString)
 	calSubtotal(rs)
@@ -152,7 +159,7 @@ If (NOT IsEmpty(Session("mycarts"))) Then
                                             <i class="fas fa-minus"></i>
                                         </button>
 
-                                        <input style="width:60px"id="form1" min="0" name="quantity" value="<%
+                                        <input id="myInput" style="width:60px"id="form1" min="1" name="quantity" value="<%
                                                         Dim id
                                                         id  = CStr(rs("ProductID"))
                                                         Response.Write(mycarts.Item(id))                                     
@@ -338,6 +345,13 @@ crossorigin="anonymous">
         });
     }
 }); 
+
+    document.getElementById("myInput").addEventListener("keydown", function(event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
 </script>
 </html>
 
