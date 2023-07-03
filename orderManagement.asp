@@ -52,30 +52,49 @@
         currentUrl = "orderManagement.asp?"
         End if
     end if
-    if(trim(inputsearch) <> "") and (NOT IsEmpty(inputsearch)) and trim(optionsearch) <> "" and (NOT IsEmpty(optionsearch)) then
+    if(trim(inputsearch) <> "") and (NOT IsEmpty(inputsearch)) and trim(optionsearch) <> "" and (NOT IsEmpty(optionsearch)) and (trim(fromDate) <> "") and (NOT IsEmpty(fromDate)) and trim(toDate) <> "" and (NOT IsEmpty(toDate)) then
         
-      Select Case optionsearch
-      Case 0
-      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders "
-      Case 1 
-      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like N'%"&inputsearch&"%') "
-      Case 2
-      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where CustomerID IN(Select CustomerID From Customers where Username Like '%"&inputsearch&"%') "
-      Case 3
-      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where PaymentMethodID = (Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') "
-      Case 4
-      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where Status like'%"&inputsearch&"%' "
-      Case 5
-      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where ShippAddress like '%"&inputsearch&"%' "
-      Case 6
-      strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where Price <= "&inputsearch&" "
+        Select Case optionsearch
+        Case 0
+        strSQL = "SELECT COUNT(OrderID) AS count FROM Orders where OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' "
+        Case 1 
+        strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like N'%"&inputsearch&"%') And OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' "
+        Case 2
+        strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where CustomerID IN(Select CustomerID From Customers where Username Like '%"&inputsearch&"%') and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' "
+        Case 3
+        strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where PaymentMethodID = (Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' "
+        Case 4
+        strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where Status like'%"&inputsearch&"%' and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' "
+        Case 5
+        strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where ShippingAddress like '%"&inputsearch&"%' and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' "
+        Case 6
+        strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where TotalAmount <= "&inputsearch&" and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' "
         End Select
-        currentUrl = "orderManagement.asp?input-search="&inputsearch&"&option-search="&optionsearch&"&"
-    Else
-        if(trim(fromDate) = "") or (IsEmpty(fromDate)) or (trim(toDate) = "") or (IsEmpty(toDate)) then
-        strSQL = "SELECT COUNT(OrderID) AS count FROM Orders "
-        currentUrl = "orderManagement.asp?"
-        End if
+            currentUrl = "orderManagement.asp?input-search="&inputsearch&"&option-search="&optionsearch&"&from_date="&fromDate&"&to_date="&toDate&"&"
+        Elseif(trim(fromDate) <> "") and (NOT IsEmpty(fromDate)) and trim(toDate) <> "" and (NOT IsEmpty(toDate) ) then
+            strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' "
+            currentUrl = "orderManagement.asp?from_date="&fromDate&"&to_date="&toDate&"&"
+        Elseif (trim(inputsearch) <> "") and (NOT IsEmpty(inputsearch)) and trim(optionsearch) <> "" and (NOT IsEmpty(optionsearch)) then
+            Select Case optionsearch
+                Case 0
+                strSQL = "SELECT COUNT(OrderID) AS count FROM Orders "
+                Case 1 
+                strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like N'%"&inputsearch&"%') "
+                Case 2
+                strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where CustomerID IN(Select CustomerID From Customers where Username Like '%"&inputsearch&"%') "
+                Case 3
+                strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where PaymentMethodID = (Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') "
+                Case 4
+                strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where Status like'%"&inputsearch&"%' "
+                Case 5
+                strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where ShippingAddress like '%"&inputsearch&"%' "
+                Case 6
+                strSQL = "SELECT COUNT(OrderID) AS count FROM Orders Where TotalAmount <= "&inputsearch&" "
+            End Select
+                currentUrl = "orderManagement.asp?input-search="&inputsearch&"&option-search="&optionsearch&"&"
+        Else
+            strSQL = "SELECT COUNT(OrderID) AS count FROM Orders "
+            currentUrl = "orderManagement.asp?"
     end if
 
     
@@ -140,39 +159,39 @@
                                     <option value="5" <%=checkPage(Clng(optionsearch)=5,"selected")%>>ShippingAddress</option>
                                     <option value="6" <%=checkPage(Clng(optionsearch)=6,"selected")%>>Price</option>
                                 </select>
-                                <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" type="submit">Search</button>
+                                
+                                <div class="row justify-content-end m-3">
+                                    <div class="d-flex ">
+                                        <div class="col-md-5" >
+                                            <div class="form-group">
+                                                <label for="fromDate">Ngày bắt đầu:</label>
+                                                <input style="width:100%" type="date" class="form-control" id="fromDate" name="from_date" value="<%=fromDate%>">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5" style="width:100%">
+                                            <div class="form-group">
+                                                <label for="toDate">Ngày kết thúc:</label>
+                                                <input style="width:100%" type="date" class="form-control" id="toDate" name="to_date" value="<%=toDate%>">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" style="margin-top:25px">
+                                            <div class="form-group ">
+                                                <button class="btn btn-outline-success " type="submit">Search</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                     </div>
                 </div>
 
                 <form id="filterForm" >
-        <div class="row justify-content-end">
-            
-            <div class="col-6 d-flex ">
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label for="fromDate">Ngày bắt đầu:</label>
-                    <input type="date" class="form-control" id="fromDate" name="from_date" value="<%=fromDate%>">
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label for="toDate">Ngày kết thúc:</label>
-                    <input type="date" class="form-control" id="toDate" name="to_date" value="<%=toDate%>">
-                </div>
-            </div>
-            <div class="col-md-2" style="margin-top:30px">
-                <div class="form-group ">
-                    <button type="submit" class="btn btn-primary">Lọc</button>
-                </div>
-            </div>
-            </div>
-        </div>
+        
     </form>
             
                 <form action="deleteOrder.asp" id="delete_products" method=post>
-                <div class="table-responsive">
-                    <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
+                <div class="table-responsive table-hover">
+                    <table class="table table-striped w-100 " id="products-datatable">
                         <thead class="table-light">
                             <tr>
                                 <th class="all" style="width: 20px;">
@@ -198,36 +217,44 @@
                                     cmdPrep.ActiveConnection = connDB
                                     cmdPrep.CommandType = 1
                                     cmdPrep.Prepared = True
-                                    if(trim(inputsearch) <> "") and (NOT IsEmpty(inputsearch)) and trim(optionsearch) <> "" and (NOT IsEmpty(optionsearch)) then
-
+                                    if(trim(inputsearch) <> "") and (NOT IsEmpty(inputsearch)) and trim(optionsearch) <> "" and (NOT IsEmpty(optionsearch)) and (trim(fromDate) <> "") and (NOT IsEmpty(fromDate)) and trim(toDate) <> "" and (NOT IsEmpty(toDate)) then
                                     Select Case optionsearch
                                       Case 0
-                                      cmdPrep.CommandText = "SELECT * FROM Orders ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders where OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID  OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 1 
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like N'%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like N'%"&inputsearch&"%') and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 2
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Username Like '%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Username Like '%"&inputsearch&"%') and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 3
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where PaymentMethodID=(Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where PaymentMethodID=(Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 4
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where Status like '%"&inputsearch&"%' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where Status like '%"&inputsearch&"%' and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 5
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where ShippAddress like '%"&inputsearch&"%' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where ShippingAddress like '%"&inputsearch&"%' and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                       Case 6
-                                      cmdPrep.CommandText = "SELECT * FROM Orders Where Price <= "&inputsearch&" ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                      cmdPrep.CommandText = "SELECT * FROM Orders Where TotalAmount <= "&inputsearch&" and OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
                                     End Select
-                                    Else
-                                        if(trim(fromDate) = "") or (IsEmpty(fromDate)) or (trim(toDate) = "") or (IsEmpty(toDate)) then
-                                        cmdPrep.CommandText = "SELECT * FROM Orders ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
-                                        end if
-                                    end if
-
-                                    if(trim(fromDate) <> "") and (NOT IsEmpty(fromDate)) and trim(toDate) <> "" and (NOT IsEmpty(toDate)) then
+                                    Elseif(trim(fromDate) <> "") and (NOT IsEmpty(fromDate)) and trim(toDate) <> "" and (NOT IsEmpty(toDate))then
                                         cmdPrep.CommandText = "SELECT * FROM Orders Where OrderDate >='"&fromDate&"' AND OrderDate <= '"&toDate&"' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY "
+                                    Elseif (trim(inputsearch) <> "") and ( Not IsEmpty(inputsearch)) and (trim(optionsearch) <> "") and (Not IsEmpty(optionsearch)) then
+                                         Select Case optionsearch
+                                            Case 0
+                                            cmdPrep.CommandText = "SELECT * FROM Orders ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                            Case 1 
+                                            cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Name Like N'%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                            Case 2
+                                            cmdPrep.CommandText = "SELECT * FROM Orders Where CustomerID IN(Select CustomerID From Customers where Username Like '%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                            Case 3
+                                            cmdPrep.CommandText = "SELECT * FROM Orders Where PaymentMethodID=(Select PaymentMethodID From PaymentMethods where PaymentMethodName Like '%"&inputsearch&"%') ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                            Case 4
+                                            cmdPrep.CommandText = "SELECT * FROM Orders Where Status like '%"&inputsearch&"%' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                            Case 5
+                                            cmdPrep.CommandText = "SELECT * FROM Orders Where ShippingAddress like '%"&inputsearch&"%' ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                            Case 6
+                                            cmdPrep.CommandText = "SELECT * FROM Orders Where TotalAmount <= "&inputsearch&" ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
+                                        End Select
                                     Else
-                                        if(trim(inputsearch) = "") or (IsEmpty(inputsearch)) or (trim(optionsearch) = "") or (IsEmpty(optionsearch)) then
                                         cmdPrep.CommandText = "SELECT * FROM Orders ORDER BY OrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"
-                                        end if
                                     end if
                                     
                                     cmdPrep.parameters.Append cmdPrep.createParameter("offset",3,1, ,offset)
