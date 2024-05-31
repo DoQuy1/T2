@@ -89,7 +89,7 @@
 						<!-- Description content goes here -->
 						<%=Result("Description")%>
 					</div>
-					<div class="tab-pane fade" id="specification" role="tabpanel" aria-labelledby="specification-tab">
+					<div class="tab-pane fade " id="specification" role="tabpanel" aria-labelledby="specification-tab">
 						<!-- Specification content goes here -->
 						<%=Result("Specification")%>
 					</div>

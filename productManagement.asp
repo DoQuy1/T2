@@ -75,7 +75,7 @@
 %>
 <!-- #include file="./layout/header.asp" -->
 
-    <div class="mt-4">
+<div class="mt-4">
     <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+    </section>
 </div>
     <div class="row">
         <div class="col-12">
